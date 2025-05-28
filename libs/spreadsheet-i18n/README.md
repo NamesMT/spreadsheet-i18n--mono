@@ -16,7 +16,7 @@
 
 ## Overview
 
-**spreadsheet-i18n** is the core library of the `spreadsheet-i18n--mono` monorepo, containing the main magics that enables i18n workflows with spreadsheets.
+**spreadsheet-i18n** is the core library of the [**`spreadsheet-i18n--mono`**](https://github.com/NamesMT/spreadsheet-i18n--mono) monorepo, containing the main magics that enables i18n workflows with spreadsheets.
 
 ## Features
 
