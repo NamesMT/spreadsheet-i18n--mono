@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.1.4
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.3...spreadsheet-i18n-v0.1.4)
+
+### 🏡 Chore
+
+- Move some deps out of devDep ([f8a65d3](https://github.com/namesmt/spreadsheet-i18n--mono/commit/f8a65d3))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.1.3
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.2...spreadsheet-i18n-v0.1.3)
