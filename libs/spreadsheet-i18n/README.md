@@ -6,21 +6,17 @@
 [![Bundlejs][bundlejs-src]][bundlejs-href]
 [![TypeDoc][TypeDoc-src]][TypeDoc-href]
 
-* [spreadsheet-i18n ]
-  * [Notes (remove this section when you use the template)](#notes-remove-this-section-when-you-use-the-template)
-    * [\* Do a global replace for `spreadsheet-i18n` and `NamesMT`](#-do-a-global-replace-for-spreadsheet-i18n-and-namesmt)
-    * [\* Notable behaviors:](#-notable-behaviors)
+* [spreadsheet-i18n](#spreadsheet-i18n)
   * [Overview](#overview)
   * [Features](#features)
   * [Usage](#usage)
     * [Install package](#install-package)
     * [Import and use](#import-and-use)
-  * [Roadmap](#roadmap)
   * [License](#license)
 
 ## Overview
 
-**spreadsheet-i18n** Is the core library of the `spreadsheet-i18n--mono` monorepo, containing the main magics that enables i18n management directly within spreadsheets.
+**spreadsheet-i18n** is the core library of the `spreadsheet-i18n--mono` monorepo, containing the main magics that enables i18n workflows with spreadsheets.
 
 ## Features
 
