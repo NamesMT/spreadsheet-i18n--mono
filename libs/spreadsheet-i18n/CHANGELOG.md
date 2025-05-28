@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.1.3
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.2...spreadsheet-i18n-v0.1.3)
+
+### 🏡 Chore
+
+- Minor update ([878ab5d](https://github.com/namesmt/spreadsheet-i18n--mono/commit/878ab5d))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.1.2
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.1...spreadsheet-i18n-v0.1.2)
