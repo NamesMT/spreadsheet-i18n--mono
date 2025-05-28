@@ -45,6 +45,7 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 (Click the hyperlink of each app to see its README detail)
 
 - [`spreadsheet-i18n`](./libs/spreadsheet-i18n/README.md): The core library of this project, containing the main magics that enables i18n management directly within spreadsheets.
+- [`unplugin-spreadsheet-i18n`](./libs/unplugin-spreadsheet-i18n/README.md): Unplugin wrapper to integrate with any project easily!
 <!-- - [`frontend`](./apps/frontend/README.md): a [Nuxt](https://nuxt.com/) app, compatible with v4 structure.
   - By default, the frontend `/api/*` routes is proxied to the `backendUrl`.
   - The `rpcApi` plugin will call the `/api/*` proxy if they're on the same domain but different ports (e.g: 127.0.0.1)
@@ -54,7 +55,7 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 - [`backend`](./apps/backend/README.md): a [Hono🔥](https://hono.dev/) app. -->
 - [`@local/locales`](./locals/locales/README.md): a shared locales/i18n library powered by [spreadsheet-i18n](./libs/spreadsheet-i18n/README.md) itself!.
 - `@local/common`: a shared library that can contain constants, functions, types.
-- `@local/common-vue`: a shared library that can contain components, constants, functions, types for vue-based apps.
+<!-- - `@local/common-vue`: a shared library that can contain components, constants, functions, types for vue-based apps. -->
 - `tsconfig`: `tsconfig.json`s used throughout the monorepo.
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
