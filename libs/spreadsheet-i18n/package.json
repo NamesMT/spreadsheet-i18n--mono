@@ -55,7 +55,9 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
+    "consola": "^3.4.2",
     "papaparse": "^5.5.3",
+    "std-env": "^3.9.0",
     "tinyglobby": "^0.2.14"
   },
   "devDependencies": {
@@ -64,9 +66,7 @@
     "@namesmt/utils": "^0.5.13",
     "@types/papaparse": "^5.3.16",
     "@vitest/coverage-v8": "^3.1.4",
-    "consola": "^3.4.2",
     "obuild": "^0.2.0",
-    "std-env": "^3.9.0",
     "vitest": "^3.1.4"
   }
 }

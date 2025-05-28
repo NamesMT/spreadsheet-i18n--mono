@@ -257,9 +257,15 @@ importers:
 
   libs/spreadsheet-i18n:
     dependencies:
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
       papaparse:
         specifier: ^5.5.3
         version: 5.5.3
+      std-env:
+        specifier: ^3.9.0
+        version: 3.9.0
       tinyglobby:
         specifier: ^0.2.14
         version: 0.2.14
@@ -279,15 +285,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.4
         version: 3.1.4(vitest@3.1.4(@types/debug@4.1.12)(@types/node@22.15.23)(jiti@2.4.2)(sass@1.89.0)(terser@5.39.1)(tsx@4.19.4)(yaml@2.7.1))
-      consola:
-        specifier: ^3.4.2
-        version: 3.4.2
       obuild:
         specifier: ^0.2.0
         version: 0.2.0(magicast@0.3.5)(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3))
-      std-env:
-        specifier: ^3.9.0
-        version: 3.9.0
       vitest:
         specifier: ^3.1.4
         version: 3.1.4(@types/debug@4.1.12)(@types/node@22.15.23)(jiti@2.4.2)(sass@1.89.0)(terser@5.39.1)(tsx@4.19.4)(yaml@2.7.1)
