@@ -70,7 +70,7 @@ export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'inc
 export function processSheetContent(
   fileContent: string,
   filePath: string,
-  options: Options,
+  options?: Options,
 ): {
     i18nOutputs: ProcessedSheetData[]
     specialOutputs: SpecialFileProcessedOutput[]
@@ -133,13 +133,13 @@ export function processSheetContent(
 
 export async function processSheetFile(
   filePath: string,
-  options: Options,
-  rootDir: string = resolve(),
+  options?: Options,
+  cwd: string = resolve(),
 ): Promise<void> {
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
 
   const parsedPath = parse(filePath)
-  logger.info(`[sheetI18n] Processing: ${relative(rootDir, filePath)}`)
+  logger.info(`[sheetI18n] Processing: ${relative(cwd, filePath)}`)
 
   const allowedExtensions = ['.csv', '.dsv', '.tsv']
   const spreadsheetExtensions = ['.xls', '.xlsx', '.xlsm', '.xlsb', '.ods', '.fods']
@@ -195,7 +195,7 @@ export async function processSheetFile(
       else {
         await outputFile(outputPath, fileData, { encoding: 'utf8' })
       }
-      logger.info(`[sheetI18n] Generated: ${relative(rootDir, outputPath)}`)
+      logger.info(`[sheetI18n] Generated: ${relative(cwd, outputPath)}`)
     }
     catch (error: any) {
       logger.error(`[sheetI18n] Error writing JSON output to ${outputPath}: ${error.message}`)
@@ -206,7 +206,7 @@ export async function processSheetFile(
     try {
       const fileData: string = type === 'json' ? JSON.stringify(content, null, 2) : content as string
       await outputFile(outputPath, fileData, { encoding: 'utf8' })
-      logger.info(`[sheetI18n] Generated (special): ${relative(rootDir, outputPath)}`)
+      logger.info(`[sheetI18n] Generated (special): ${relative(cwd, outputPath)}`)
     }
     catch (error: any) {
       logger.error(`[sheetI18n] Error writing special output to ${outputPath}: ${error.message}`)
@@ -218,16 +218,16 @@ export async function processSheetFile(
  * Scans a directory for files matching include/exclude patterns and processes them.
  *
  * @param options Options for processing, including include/exclude patterns.
- * @param scanDir The root directory to scan. Defaults to the current working directory.
+ * @param cwd Sets the working directory for the scan and processing.
  *
  * Note: this is slightly breaking with old `unplugin-sheet-i18n`, in which all files would always be scanned then filters applied,
  * now, if you specify some glob patterns, the initial scan will use those patterns, then regexp filters is applied afterwards.
  */
-export async function scanConvert(options: Options, scanDir?: string): Promise<void> {
+export async function scanConvert(options?: Options, cwd?: string): Promise<void> {
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
-  const effectiveScanDir = scanDir ? resolve(scanDir) : resolve()
+  const effectiveCwd = cwd ? resolve(cwd) : resolve()
 
-  logger.info(`[sheetI18n] Scanning directory: ${effectiveScanDir}`)
+  logger.info(`[sheetI18n] Scanning directory: ${effectiveCwd}`)
   logger.debug(`[sheetI18n] Resolved options for scan: ${JSON.stringify(resolvedOptions, null, 2)}`)
 
   const { globs: includeGlobs, regexps: includeRegexps } = normalizePatterns(resolvedOptions.include)
@@ -246,13 +246,13 @@ export async function scanConvert(options: Options, scanDir?: string): Promise<v
   let files: string[] = []
   try {
     files = await glob(globsToSearch, {
-      cwd: effectiveScanDir,
+      cwd: effectiveCwd,
       ignore: excludeGlobs,
       absolute: true,
       dot: true,
       onlyFiles: true,
     })
-    logger.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${effectiveScanDir}): ${JSON.stringify(files)}`)
+    logger.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${effectiveCwd}): ${JSON.stringify(files)}`)
   }
   catch (error: any) {
     logger.error(`[sheetI18n] Error during globbing: ${error.message}`)
@@ -263,7 +263,7 @@ export async function scanConvert(options: Options, scanDir?: string): Promise<v
     // filePath is absolute here. For regex matching, it's often better to use relative paths
     // or ensure regexes are written to handle absolute paths if necessary.
     // The old context used relativePath for filter. Let's stick to that for regex.
-    const relativeFilePath = relative(effectiveScanDir, filePath)
+    const relativeFilePath = relative(effectiveCwd, filePath)
 
     // Apply include Regexps:
     // If includeGlobs were used, files are already pre-filtered by them.
@@ -294,8 +294,8 @@ export async function scanConvert(options: Options, scanDir?: string): Promise<v
   logger.info(`[sheetI18n] Found ${filteredFiles.length} files to process.`)
 
   for (const filePath of filteredFiles) {
-    // processSheetFile expects absolute paths for filePath, and rootDir for relative logging
-    await processSheetFile(filePath, resolvedOptions, effectiveScanDir)
+    // processSheetFile expects absolute paths for filePath, and cwd for relative logging
+    await processSheetFile(filePath, resolvedOptions, effectiveCwd)
   }
 
   logger.info('[sheetI18n] Scan and convert finished.')
