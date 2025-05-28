@@ -8,7 +8,7 @@ export function setupOpenAPI(app: Hono<any, any>, prefix = '/openapi') {
     `${prefix}/spec`,
     openAPISpecs(app, {
       documentation: {
-        info: { title: `starter-monorepo's backend`, version: '1.0.0', description: 'My amazing API' },
+        info: { title: `spreadsheet-i18n--mono's backend`, version: '1.0.0', description: 'My amazing API' },
       },
     }),
   )

@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  name: 'starter-monorepo',
+  name: 'spreadsheet-i18n--mono',
   /**
    * Enable `/api/*` proxy to the backendUrl.
    *

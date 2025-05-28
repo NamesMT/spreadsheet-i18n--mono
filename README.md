@@ -7,9 +7,9 @@
 
 </div>
 
-# starter-monorepo
+# spreadsheet-i18n--mono
 
-* [starter-monorepo](#starter-monorepo)
+* [spreadsheet-i18n--mono](#spreadsheet-i18n--mono)
   * [Overview](#overview)
     * [Why spreadsheets for i18n?](#why-spreadsheets-for-i18n)
   * [What's inside?](#whats-inside)

@@ -1,28 +1,68 @@
 {
-  "name": "backend",
+  "name": "spreadsheet-i18n",
   "type": "module",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Enhance internationalization (i18n) workflows with spreadsheets",
+  "author": "NamesMT <dangquoctrung123@gmail.com>",
+  "license": "Apache-2.0",
+  "funding": "https://github.com/sponsors/namesmt",
+  "homepage": "https://github.com/namesmt/spreadsheet-i18n--mono#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namesmt/spreadsheet-i18n--mono.git"
+  },
+  "bugs": "https://github.com/namesmt/spreadsheet-i18n--mono/issues",
+  "keywords": [
+    "transform",
+    "spreadsheet",
+    "generation",
+    "excel",
+    "xlsx",
+    "ods",
+    "fods",
+    "csv",
+    "dsv",
+    "i18n",
+    "internalization",
+    "localization",
+    "localize"
+  ],
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "source": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "start": "dotenvx run -f .env.local.ignored -f .env.local -f .env -- tsx src/index.ts",
-    "watch": "dotenvx run -f .env.local.ignored -f .env.local -f .env -- tsx watch src/index.ts",
     "lint": "eslint .",
     "test": "vitest",
     "test:types": "tsc --noEmit --skipLibCheck",
     "quickcheck": "pnpm run lint && pnpm run test:types",
     "check": "pnpm lint && pnpm test:types && vitest run --coverage",
-    "dev": "pnpm run watch",
     "stub": "obuild --stub",
-    "build": "dotenvx run -f .env.prod.local -f .env -- obuild"
+    "build": "dotenvx run -f .env.prod.local -f .env -- obuild",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "srvx": "^0.7.1"
+    "papaparse": "^5.5.3",
+    "tinyglobby": "^0.2.14"
   },
   "devDependencies": {
     "@local/common": "workspace:*",
-    "@local/locales": "workspace:*",
     "@local/tsconfig": "workspace:*",
     "@namesmt/utils": "^0.5.13",
+    "@types/papaparse": "^5.3.16",
     "@vitest/coverage-v8": "^3.1.4",
     "consola": "^3.4.2",
     "obuild": "^0.2.0",

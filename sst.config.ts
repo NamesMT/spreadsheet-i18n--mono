@@ -8,7 +8,7 @@ import { env } from 'std-env'
 export default $config({
   app(input) {
     return {
-      name: 'starter-monorepo',
+      name: 'spreadsheet-i18n--mono',
       removal: input?.stage === 'production' ? 'retain' : 'remove',
       protect: ['production'].includes(input?.stage),
       home: 'aws',

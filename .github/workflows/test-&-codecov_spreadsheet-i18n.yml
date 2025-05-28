@@ -1,0 +1,65 @@
+name: test & codecov - spreadsheet-i18n
+
+on:
+  # Runs on pushes & prs targeting the default branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  quickcheck:
+    uses: ./.github/workflows/quickcheck.yml
+    secrets: inherit
+  test_codecov:
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node: [22.x]
+        os: [ubuntu-latest]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup actions/cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .turbo
+          key: ${{ runner.os }}-ac-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-ac-
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Test (w/ coverage report)
+        run: pnpm -F spreadsheet-i18n test run --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./libs/spreadsheet-i18n/coverage/coverage-final.json
+          flags: spreadsheet-i18n
+          token: ${{ secrets.CODECOV_TOKEN }}

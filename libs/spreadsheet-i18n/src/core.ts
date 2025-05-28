@@ -1,0 +1,318 @@
+import type { Options, ProcessedSheetData, SpecialFileProcessedOutput } from './types'
+import { defu } from 'defu'
+import { parse, relative, resolve } from 'pathe'
+import { process } from 'std-env'
+import { glob } from 'tinyglobby'
+import {
+  outputFile,
+  outputWriteMerge,
+  readCsvFile,
+  readXlsxFile,
+} from './helpers/fs'
+import { logger } from './helpers/logger'
+import {
+  filterCommentRows,
+  filterRowsWithEmptyKeys,
+  generateStandardI18nOutputs,
+  normalizePatterns,
+  parseCsvData,
+  processFileKeys,
+  processJsonKeys,
+} from './helpers/utils'
+
+// Internal type for options after defaults have been applied.
+export type ResolvedOptions = Options & Required<Pick<Options, 'include' |
+  'keyStyle' |
+  'keyColumn' |
+  'localesMatcher' |
+  'comments' |
+  'xlsx' |
+  'mergeOutput' |
+  'preserveStructure' |
+  'replacePunctuationSpace' |
+  'jsonProcessor' |
+  'jsonProcessorClean' |
+  'fileProcessor' |
+  'fileProcessorClean'>>
+
+export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'include' |
+  'keyStyle' |
+  'keyColumn' |
+  'localesMatcher' |
+  'comments' |
+  'xlsx' |
+  'mergeOutput' |
+  'preserveStructure' |
+  'replacePunctuationSpace' |
+  'jsonProcessor' |
+  'jsonProcessorClean' |
+  'fileProcessor' |
+  'fileProcessorClean'> = {
+  include: /(?:[/\\]|^)i18n\.[cdt]sv$/,
+  exclude: undefined,
+  outDir: undefined,
+  keyStyle: 'flat',
+  keyColumn: 'KEY',
+  valueColumn: undefined,
+  localesMatcher: /^\w{2}(?:-\w{2,4})?$/,
+  comments: '//',
+  xlsx: false,
+  mergeOutput: true,
+  preserveStructure: false,
+  replacePunctuationSpace: true,
+  jsonProcessor: false,
+  jsonProcessorClean: true,
+  fileProcessor: false,
+  fileProcessorClean: true,
+  delimiter: undefined,
+}
+
+export function processSheetContent(
+  fileContent: string,
+  filePath: string,
+  options: Options,
+): {
+    i18nOutputs: ProcessedSheetData[]
+    specialOutputs: SpecialFileProcessedOutput[]
+  } {
+  const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
+  const parsedPath = parse(filePath)
+
+  const csvStringAfterComments = filterCommentRows(fileContent, resolvedOptions.comments)
+  const { data: parsedRows, meta: parseMeta } = parseCsvData(csvStringAfterComments, resolvedOptions.delimiter, filePath)
+
+  const detectedLocales = (parseMeta?.fields || []).filter((field: string) =>
+    field.match(resolvedOptions.localesMatcher),
+  )
+
+  const { filteredRows: rowsAfterEmptyKeyFilter } = filterRowsWithEmptyKeys(
+    parsedRows,
+    resolvedOptions.keyColumn,
+    filePath,
+  )
+
+  let dataForStandardProcessing = [...rowsAfterEmptyKeyFilter]
+  const allSpecialOutputs: SpecialFileProcessedOutput[] = []
+
+  if (resolvedOptions.jsonProcessor) {
+    const { remainingRows, outputs } = processJsonKeys(
+      dataForStandardProcessing,
+      filePath,
+      resolvedOptions,
+      detectedLocales,
+    )
+    if (resolvedOptions.jsonProcessorClean) {
+      dataForStandardProcessing = remainingRows
+    }
+    allSpecialOutputs.push(...outputs)
+  }
+
+  if (resolvedOptions.fileProcessor) {
+    const { remainingRows, outputs } = processFileKeys(
+      dataForStandardProcessing,
+      filePath,
+      resolvedOptions,
+      detectedLocales,
+    )
+    if (resolvedOptions.fileProcessorClean) {
+      dataForStandardProcessing = remainingRows
+    }
+    allSpecialOutputs.push(...outputs)
+  }
+
+  const standardI18nOutputs = generateStandardI18nOutputs(
+    dataForStandardProcessing,
+    resolvedOptions,
+    detectedLocales,
+    parsedPath,
+    filePath,
+  )
+
+  return { i18nOutputs: standardI18nOutputs, specialOutputs: allSpecialOutputs }
+}
+
+export async function processSheetFile(
+  filePath: string,
+  options: Options,
+  rootDir: string = resolve(),
+): Promise<void> {
+  const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
+
+  const parsedPath = parse(filePath)
+  logger.info(`[sheetI18n] Processing: ${relative(rootDir, filePath)}`)
+
+  const allowedExtensions = ['.csv', '.dsv', '.tsv']
+  const spreadsheetExtensions = ['.xls', '.xlsx', '.xlsm', '.xlsb', '.ods', '.fods']
+  if (resolvedOptions.xlsx) {
+    allowedExtensions.push(...spreadsheetExtensions)
+  }
+
+  if (!allowedExtensions.includes(parsedPath.ext.toLowerCase())) {
+    logger.error(
+      `[sheetI18n] Unexpected extension: ${filePath}${
+        spreadsheetExtensions.includes(parsedPath.ext.toLowerCase()) && !resolvedOptions.xlsx
+          ? '. XLSX processing is not enabled. Set `xlsx: true` in options.'
+          : ''
+      }`,
+    )
+    return
+  }
+
+  let fileContentString: string
+  try {
+    if (['.csv', '.dsv', '.tsv'].includes(parsedPath.ext.toLowerCase())) {
+      fileContentString = await readCsvFile(filePath)
+    }
+    else if (spreadsheetExtensions.includes(parsedPath.ext.toLowerCase())) {
+      if (!resolvedOptions.xlsx) {
+        logger.error(`[sheetI18n] XLSX file (${filePath}) found but 'xlsx' option is false.`)
+        return
+      }
+      fileContentString = readXlsxFile(filePath)
+    }
+    else {
+      logger.error(`[sheetI18n] File type not supported for ${filePath}`)
+      return
+    }
+  }
+  catch (error: any) {
+    logger.error(`[sheetI18n] Error reading file ${filePath}: ${error.message}`)
+    return
+  }
+
+  const { i18nOutputs, specialOutputs } = processSheetContent(fileContentString, filePath, resolvedOptions)
+
+  for (const { outputPath, data } of i18nOutputs) {
+    if (!data || Object.keys(data).length === 0) {
+      logger.warn(`[sheetI18n] Empty content for ${outputPath}. Skipping file write.`)
+      continue
+    }
+    try {
+      const fileData = JSON.stringify(data, null, 2)
+      if (resolvedOptions.mergeOutput) {
+        await outputWriteMerge(outputPath, fileData, { encoding: 'utf8', mergeContent: 'json' })
+      }
+      else {
+        await outputFile(outputPath, fileData, { encoding: 'utf8' })
+      }
+      logger.info(`[sheetI18n] Generated: ${relative(rootDir, outputPath)}`)
+    }
+    catch (error: any) {
+      logger.error(`[sheetI18n] Error writing JSON output to ${outputPath}: ${error.message}`)
+    }
+  }
+
+  for (const { outputPath, content, type } of specialOutputs) {
+    try {
+      const fileData: string = type === 'json' ? JSON.stringify(content, null, 2) : content as string
+      await outputFile(outputPath, fileData, { encoding: 'utf8' })
+      logger.info(`[sheetI18n] Generated (special): ${relative(rootDir, outputPath)}`)
+    }
+    catch (error: any) {
+      logger.error(`[sheetI18n] Error writing special output to ${outputPath}: ${error.message}`)
+    }
+  }
+}
+
+/**
+ * Scans a directory for files matching include/exclude patterns and processes them.
+ *
+ * @param options Options for processing, including include/exclude patterns.
+ * @param scanDir The root directory to scan. Defaults to the current working directory.
+ *
+ * Note: this is slightly breaking with old `unplugin-sheet-i18n`, in which all files would always be scanned then filters applied,
+ * now, if you specify some glob patterns, the initial scan will use those patterns, then regexp filters is applied afterwards.
+ */
+export async function scanConvert(options: Options, scanDir?: string): Promise<void> {
+  const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
+  const effectiveScanDir = scanDir ? resolve(scanDir) : resolve()
+
+  logger.info(`[sheetI18n] Scanning directory: ${effectiveScanDir}`)
+  logger.debug(`[sheetI18n] Resolved options for scan: ${JSON.stringify(resolvedOptions, null, 2)}`)
+
+  const { globs: includeGlobs, regexps: includeRegexps } = normalizePatterns(resolvedOptions.include)
+  const { globs: excludeGlobs, regexps: excludeRegexps } = normalizePatterns(resolvedOptions.exclude)
+
+  if (includeGlobs.length === 0 && includeRegexps.length === 0) {
+    // This case implies that the default include regex was overridden with an empty pattern.
+    logger.warn('[sheetI18n] No include patterns specified (neither globs nor RegExps). Nothing to process.')
+    return
+  }
+
+  // Determine the globs to search. If no includeGlobs are provided, search all files ('**/*')
+  // so that includeRegexps can be applied later. excludeGlobs will always be used by tinyglobby.
+  const globsToSearch = includeGlobs.length > 0 ? includeGlobs : ['**/*']
+
+  let files: string[] = []
+  try {
+    files = await glob(globsToSearch, {
+      cwd: effectiveScanDir,
+      ignore: excludeGlobs,
+      absolute: true,
+      dot: true,
+      onlyFiles: true,
+    })
+    logger.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${effectiveScanDir}): ${JSON.stringify(files)}`)
+  }
+  catch (error: any) {
+    logger.error(`[sheetI18n] Error during globbing: ${error.message}`)
+    return // Stop if globbing fails
+  }
+
+  const filteredFiles = files.filter((filePath) => {
+    // filePath is absolute here. For regex matching, it's often better to use relative paths
+    // or ensure regexes are written to handle absolute paths if necessary.
+    // The old context used relativePath for filter. Let's stick to that for regex.
+    const relativeFilePath = relative(effectiveScanDir, filePath)
+
+    // Apply include Regexps:
+    // If includeGlobs were used, files are already pre-filtered by them.
+    // They must ALSO match at least one includeRegexp if includeRegexps are provided.
+    // If includeGlobs were NOT used (i.e., globsToSearch was '**/*'),
+    // then they MUST match at least one includeRegexp if includeRegexps are provided.
+    // If includeRegexps is empty, this condition is skipped.
+    if (includeRegexps.length > 0) {
+      if (!includeRegexps.some(re => re.test(relativeFilePath))) {
+        return false
+      }
+    }
+
+    // Apply exclude Regexps: Must not match any
+    if (excludeRegexps.length > 0) {
+      if (excludeRegexps.some(re => re.test(relativeFilePath))) {
+        return false
+      }
+    }
+    return true
+  })
+
+  if (filteredFiles.length === 0) {
+    logger.info('[sheetI18n] No files matched the specified patterns after all filters.')
+    return
+  }
+
+  logger.info(`[sheetI18n] Found ${filteredFiles.length} files to process.`)
+
+  for (const filePath of filteredFiles) {
+    // processSheetFile expects absolute paths for filePath, and rootDir for relative logging
+    await processSheetFile(filePath, resolvedOptions, effectiveScanDir)
+  }
+
+  logger.info('[sheetI18n] Scan and convert finished.')
+}
+
+// IIFE for async setup of xlsx fs
+(async () => {
+  try {
+    if (typeof process !== 'undefined' && process.versions?.node) {
+      const nodeFsModule = await import('node:fs')
+      const xlsxModule = await import('@e965/xlsx')
+      if (nodeFsModule && xlsxModule && typeof xlsxModule.set_fs === 'function') {
+        xlsxModule.set_fs(nodeFsModule.default || nodeFsModule)
+      }
+    }
+  }
+  catch (error) {
+    logger.debug('[sheetI18n] Could not set fs for xlsx. This is expected if not in Node.js or xlsx is not used.', error instanceof Error ? error.message : String(error))
+  }
+})()

@@ -1,5 +1,5 @@
 {
-  "name": "starter-monorepo",
+  "name": "spreadsheet-i18n--mono",
   "type": "module",
   "private": true,
   "packageManager": "pnpm@10.11.0",

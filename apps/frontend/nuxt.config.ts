@@ -6,7 +6,7 @@ import { Names } from './app/primevue.config'
 
 const siteConfig = {
   url: import.meta.env.NUXT_PUBLIC_FRONTEND_URL,
-  name: 'starter-monorepo',
+  name: 'spreadsheet-i18n--mono',
   description: '🔥Hono RPC, Nuxt, SST Ion, Kinde Auth, Tanstack Query, Shadcn, Primevue, UnoCSS',
 }
 
