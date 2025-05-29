@@ -13,7 +13,11 @@
   * [Overview](#overview)
     * [Why spreadsheets for i18n?](#why-spreadsheets-for-i18n)
   * [What's inside?](#whats-inside)
-    * [Apps and Packages](#apps-and-packages)
+    * [Overview of the tech](#overview-of-the-tech)
+    * [Apps and Libraries](#apps-and-libraries)
+      * [`spreadsheet-i18n`: The core library](#spreadsheet-i18n-the-core-library)
+      * [`unplugin-spreadsheet-i18n`: Unplugin support](#unplugin-spreadsheet-i18n-unplugin-support)
+    * [Local packages](#local-packages)
     * [Utilities](#utilities)
     * [Build](#build)
     * [Develop](#develop)
@@ -38,27 +42,40 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 
 ## What's inside?
 
+### Overview of the tech
+
 ⏩ This template is powered by [Turborepo](https://turbo.build/repo).
 
-### Apps and Packages
+👌 The repo is always [**TypeScript**](https://www.typescriptlang.org/)-native where possible.
 
-(Click the hyperlink of each app to see its README detail)
+### Apps and Libraries
 
-- [`spreadsheet-i18n`](./libs/spreadsheet-i18n/README.md): The core library of this project, containing the main magics that enables i18n management directly within spreadsheets.
-- [`unplugin-spreadsheet-i18n`](./libs/unplugin-spreadsheet-i18n/README.md): Unplugin wrapper to integrate with any project easily!
-<!-- - [`frontend`](./apps/frontend/README.md): a [Nuxt](https://nuxt.com/) app, compatible with v4 structure.
-  - By default, the frontend `/api/*` routes is proxied to the `backendUrl`.
-  - The `rpcApi` plugin will call the `/api/*` proxy if they're on the same domain but different ports (e.g: 127.0.0.1)
-    - > this mimics a production environment where the static frontend and the backend lives on the same domain at /api, which is the most efficient configuration for Cloudfront + Lambda Function Url
-    - If the `frontend` and `backend` are on different domains then the backend will be called directly without proxy.
-    - This could be configured in frontend's [`app.config.ts`](./apps/frontend/app/app.config.ts)
-- [`backend`](./apps/backend/README.md): a [Hono🔥](https://hono.dev/) app. -->
-- [`@local/locales`](./locals/locales/README.md): a shared locales/i18n library powered by [spreadsheet-i18n](./libs/spreadsheet-i18n/README.md) itself!.
-- `@local/common`: a shared library that can contain constants, functions, types.
-<!-- - `@local/common-vue`: a shared library that can contain components, constants, functions, types for vue-based apps. -->
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo.
+#### [`spreadsheet-i18n`](./libs/spreadsheet-i18n/README.md): The core library
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+* Containing the main magics that enables i18n management directly within spreadsheets.
+
+#### [`unplugin-spreadsheet-i18n`](./libs/unplugin-spreadsheet-i18n/README.md): [Unplugin](https://unplugin.unjs.io/) support
+
+* Unplugin wrapper to integrate with any project easily!
+
+<!--
+#### [`frontend`](./apps/frontend/README.md): a [Nuxt](https://nuxt.com/) app, compatible with v4 structure.
+  * By default, the frontend `/api/*` routes is proxied to the `backendUrl`.
+  * The `rpcApi` plugin will call the `/api/*` proxy if they're on the same domain but different ports (e.g: 127.0.0.1)
+    * > this mimics a production environment where the static frontend and the backend lives on the same domain at /api, which is the most efficient configuration for Cloudfront + Lambda Function Url
+    * If the `frontend` and `backend` are on different domains then the backend will be called directly without proxy.
+    * This could be configured in frontend's [`app.config.ts`](./apps/frontend/app/app.config.ts)
+#### [`backend`](./apps/backend/README.md): a [Hono🔥](https://hono.dev/) app.
+-->
+
+### Local packages
+
++ [`@local/locales`](./locals/locales/README.md): a shared locales/i18n library powered by [spreadsheet-i18n](./libs/spreadsheet-i18n/README.md) itself!.
++ `@local/common`: a shared library that can contain constants, functions, types.
+<!--
++ `@local/common-vue`: a shared library that can contain components, constants, functions, types for vue-based apps.
+-->
++ `tsconfig`: `tsconfig.json`s used throughout the monorepo.
 
 ### Utilities
 
