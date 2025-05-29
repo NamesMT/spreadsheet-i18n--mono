@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.2.0
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.4...spreadsheet-i18n-v0.2.0)
+
+### 💅 Refactors
+
+- ⚠️  Rename `$JSON` => `$JII`, remove `__selectorKeys` in output, remove default extension for `$FILE` ([b461149](https://github.com/namesmt/spreadsheet-i18n--mono/commit/b461149))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Rename `$JSON` => `$JII`, remove `__selectorKeys` in output, remove default extension for `$FILE` ([b461149](https://github.com/namesmt/spreadsheet-i18n--mono/commit/b461149))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.1.4
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.3...spreadsheet-i18n-v0.1.4)
