@@ -138,35 +138,35 @@ export function filterRowsWithEmptyKeys(
 
 export interface ParsedJsonCommand {
   id: string
-  rawSelectors: string
+  rawPrimaries: string
   pathStr: string
   key: string
-  selectors: string[][]
+  primaries: string[][]
 }
 
 /**
- * Parses a key string for the $JSON; command.
+ * Parses a key string for the $JII; command.
  *
- * Syntax: `$JSON;[fileName];[selectors];[path];[key]`
- * - `fileName`: The base name for the output JSON file (e.g., `cloud` results in `cloud.json`).
- * - `selectors`: Comma-separated key:value pairs (e.g., `id:item1,type:widget`). These become properties in the output JSON objects.
- * - `path`: Dot-separated path for nesting the translation within the output JSON (e.g., `product.details`).
- * - `key`: The final key for the translation string (e.g., `title`).
+ * Syntax: `$JII;[filePath];[primaries];[path];[key]`
+ * + `filePath`: The output file path, with extension (e.g., `cloud` results in `cloud` file without .json extension).
+ * + `primaries`: Comma-separated key:value pairs (e.g., `id:item1,type:widget`). These become the main properties in the output JSON objects, and to distinguish them from the other items.
+ * + `path`: Dot-separated path for nesting the translation within the output JSON (e.g., `product.details`).
+ * + `key`: The final key for the translation string (e.g., `title`).
  *
  * ---
  *
  * Example:
  *
- * Input keyCell: `$JSON;myProducts;id:prod123,category:electronics;info.specs;displayName`
+ * Input keyCell: `$JII;myProducts;id:prod123,category:electronics;info.specs;displayName`
  *
  * Output:
  * ```js
  * {
  *   id: 'myProducts',
- *   rawSelectors: 'id:prod123,category:electronics',
+ *   rawPrimaries: 'id:prod123,category:electronics',
  *   pathStr: 'info.specs',
  *   key: 'displayName',
- *   selectors: [['id', 'prod123'], ['category', 'electronics']]
+ *   primaries: [['id', 'prod123'], ['category', 'electronics']]
  * }
  * ```
  *
@@ -176,7 +176,6 @@ export interface ParsedJsonCommand {
  *   {
  *     "id": "prod123",
  *     "category": "electronics",
- *     "__selectorKeys": ["id", "category"], // Internal helper
  *     "info": {
  *       "specs": {
  *         "i18n": {
@@ -186,7 +185,7 @@ export interface ParsedJsonCommand {
  *       }
  *     }
  *   },
- *   // ... other items sharing the same fileName and selectors
+ *   // ... other items sharing the same fileName and primaries
  * ]
  * ```
  *
@@ -195,22 +194,22 @@ export interface ParsedJsonCommand {
  * @returns A parsed command object or null if the format is invalid.
  */
 export function parseJsonCommand(keyCell: string, filePath: string): ParsedJsonCommand | null {
-  if (!keyCell.startsWith('$JSON;'))
+  if (!keyCell.startsWith('$JII;'))
     return null
 
-  const parts = keyCell.replace('$JSON;', '').split(';')
+  const parts = keyCell.replace('$JII;', '').split(';')
   if (parts.length !== 4 || !parts.every(Boolean)) {
-    logger.error(`[sheetI18n] ${filePath}: Invalid $JSON command format: ${keyCell}`)
+    logger.error(`[sheetI18n] ${filePath}: Invalid $JII command format: ${keyCell}`)
     return null
   }
-  const [id, rawSelectors, pathStr, key] = parts
-  const selectors = rawSelectors.split(',').map((s: string) => s.split(':'))
-  return { id, rawSelectors, pathStr, key, selectors }
+  const [id, rawPrimaries, pathStr, key] = parts
+  const primaries = rawPrimaries.split(',').map((s: string) => s.split(':'))
+  return { id, rawPrimaries, pathStr, key, primaries }
 }
 
 export interface ParsedFileCommand {
   fileName: string
-  extension: string
+  extension: string | undefined
 }
 
 /**
@@ -218,7 +217,7 @@ export interface ParsedFileCommand {
  *
  * Syntax: `$FILE;[fileName];[extension]`
  * - `fileName`: The base name for the output file (e.g., `terms`).
- * - `extension`: The file extension (e.g., `md`, `txt`). Defaults to `txt`.
+ * - `extension`: The file extension (e.g., `md`, `txt`).
  *
  * ---
  *
@@ -239,9 +238,9 @@ export interface ParsedFileCommand {
  *
  * Output:
  * ```js
- * { fileName: 'readme', extension: 'txt' }
+ * { fileName: 'readme', extension: undefined }
  * ```
- * This would generate files like `readme_en.txt`, `readme_fr.txt`, etc.
+ * This would generate files like `readme_en`, `readme_fr`, etc.
  *
  * @param keyCell The string from the key column.
  * @param filePath The path of the source spreadsheet file (for logging).
@@ -256,17 +255,17 @@ export function parseFileCommand(keyCell: string, filePath: string): ParsedFileC
     logger.error(`[sheetI18n] ${filePath}: Invalid $FILE command format: ${keyCell}`)
     return null
   }
-  const [fileName, extension = 'txt'] = parts
+  const [fileName, extension] = parts
   return { fileName, extension }
 }
 
 /**
- * Processes rows that match the $JSON; command format.
+ * Processes rows that match the $JII; command format.
  *
- * It groups translations by the `id` and `rawSelectors` from the command,
+ * It groups translations by the `id` and `rawPrimaries` from the command,
  * creating an array of objects in the output JSON file.
  *
- * Each object in the array will contain the selector key-value pairs and the nested translations.
+ * Each object in the array will contain the primary key-value pairs and the nested translations.
  *
  * @param dataRows Rows parsed from the spreadsheet.
  * @param filePath Path of the source file (for logging).
@@ -282,34 +281,34 @@ export function processJsonKeys(
   locales: string[],
 ): { remainingRows: Record<string, any>[], outputs: SpecialFileProcessedOutput[] } {
   const outputs: SpecialFileProcessedOutput[] = []
-  const jsonStore: Record<string, Record<string, any>> = {} // { id: { rawSelectors: data } }
+  const jsonStore: Record<string, Record<string, any>> = {} // { [id]: { rawPrimaries: data } }
 
   const remainingRows = dataRows.filter((row) => {
     const keyCell = String(row[resolvedOptions.keyColumn] || '')
     const command = parseJsonCommand(keyCell, filePath)
 
     if (!command) {
-      // If it's not a $JSON key or invalid, keep it for further processing (or filter if invalid and strict)
-      return !keyCell.startsWith('$JSON;') // Only keep if not an attempted (but invalid) $JSON key
+      // If it's not a $JII key or invalid, keep it for further processing (or filter if invalid and strict)
+      return !keyCell.startsWith('$JII;') // Only keep if not an attempted (but invalid) $JII key
     }
 
     if (!locales.length) {
-      logger.warn(`[sheetI18n] ${filePath}: $JSON key found but no locales detected. Skipping row: ${keyCell}`)
+      logger.warn(`[sheetI18n] ${filePath}: $JII key found but no locales detected. Skipping row: ${keyCell}`)
       return false // This row is processed (skipped)
     }
 
-    const { id, rawSelectors, pathStr, key, selectors } = command
+    const { id, rawPrimaries, pathStr, key, primaries } = command
     if (!jsonStore[id])
       jsonStore[id] = {}
-    if (!jsonStore[id][rawSelectors]) {
-      jsonStore[id][rawSelectors] = { __selectorKeys: selectors.map((v: string[]) => v[0]) }
+    if (!jsonStore[id][rawPrimaries]) {
+      jsonStore[id][rawPrimaries] = {}
     }
 
-    const targetObject = jsonStore[id][rawSelectors]
-    selectors.forEach((selectorPair: string[]) => {
-      if (selectorPair.length >= 1) {
-        const k = selectorPair[0]
-        const v = selectorPair.length > 1 ? selectorPair[1] : ''
+    const targetObject = jsonStore[id][rawPrimaries]
+    primaries.forEach((primaryPair: string[]) => {
+      if (primaryPair.length >= 1) {
+        const k = primaryPair[0]
+        const v = primaryPair.length > 1 ? primaryPair[1] : ''
         objectSet(targetObject, k, v)
       }
     })
@@ -321,11 +320,11 @@ export function processJsonKeys(
         objectSet(targetObject, [...pathStr.split('.'), 'i18n', locale, key], valToSet)
       }
     })
-    return false // This row has been processed as a $JSON key
+    return false // This row has been processed as a $JII key
   })
 
-  Object.entries(jsonStore).forEach(([id, selectorGroups]) => {
-    const outputData = Object.values(selectorGroups)
+  Object.entries(jsonStore).forEach(([id, primaryGroups]) => {
+    const outputData = Object.values(primaryGroups)
     if (outputData.length > 0) {
       const outputName = `${id}.json`
       outputs.push({
@@ -337,7 +336,8 @@ export function processJsonKeys(
   })
 
   if (outputs.length > 0)
-    logger.info(`[sheetI18n] ${filePath}: Special $JSON keys processed.`)
+    logger.info(`[sheetI18n] ${filePath}: Special $JII keys processed.`)
+
   return { remainingRows, outputs }
 }
 
@@ -381,7 +381,7 @@ export function processFileKeys(
     locales.forEach((locale) => {
       const value = row[locale]
       if (!isEmptyCell(value)) {
-        const outputFileName = `${fileName}_${locale}.${extension}`
+        const outputFileName = `${fileName}_${locale}${extension ? `.${extension}` : ''}`
         filesContentStore[outputFileName] = resolvedOptions.replacePunctuationSpace ? replacePunctuationSpace(String(value)) : String(value)
       }
     })

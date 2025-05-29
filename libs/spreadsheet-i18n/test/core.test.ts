@@ -86,7 +86,7 @@ describe('core Functions', () => {
       expect(i18nOutputs[0].data).toEqual({ app: { title: 'My App' } })
     })
 
-    // TODO: Add tests for $JSON and $FILE processors
+    // TODO: Add tests for $JII and $FILE processors
   })
 
   describe('processSheetFile', () => {

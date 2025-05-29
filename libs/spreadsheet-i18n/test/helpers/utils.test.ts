@@ -37,8 +37,8 @@ const mockDefaultOptions = {
   mergeOutput: true,
   preserveStructure: false,
   replacePunctuationSpace: true,
-  jsonProcessor: false,
-  jsonProcessorClean: true,
+  jiiProcessor: false,
+  jiiProcessorClean: true,
   fileProcessor: false,
   fileProcessorClean: true,
   outDir: undefined,
@@ -175,38 +175,38 @@ describe('helper Utilities - utils.ts', () => {
   })
 
   describe('parseJsonCommand', () => {
-    it('should parse valid $JSON command', () => {
-      const cmd = '$JSON;myFile;id:item1,cat:A;path.to.key;name'
+    it('should parse valid $JII command', () => {
+      const cmd = '$JII;myFile;id:item1,cat:A;path.to.key;name'
       const result = parseJsonCommand(cmd, 'test.csv')
       expect(result).toEqual({
         id: 'myFile',
-        rawSelectors: 'id:item1,cat:A',
+        rawPrimaries: 'id:item1,cat:A',
         pathStr: 'path.to.key',
         key: 'name',
-        selectors: [['id', 'item1'], ['cat', 'A']],
+        primaries: [['id', 'item1'], ['cat', 'A']],
       })
     })
     it('should return null for invalid format', () => {
-      expect(parseJsonCommand('$JSON;too;few;parts', 'test.csv')).toBeNull()
+      expect(parseJsonCommand('$JII;too;few;parts', 'test.csv')).toBeNull()
       expect(logger.error).toHaveBeenCalled()
     })
-    it('should return null if not $JSON command', () => {
+    it('should return null if not $JII command', () => {
       expect(parseJsonCommand('REGULAR_KEY', 'test.csv')).toBeNull()
     })
   })
 
   describe('processJsonKeys', () => {
     const rows = [
-      { KEY: '$JSON;cloud;id:s1;config;name', en: 'Service 1 EN', fr: 'Service 1 FR' },
-      { KEY: '$JSON;cloud;id:s1;config;desc', en: 'Desc 1 EN', fr: 'Desc 1 FR' },
-      { KEY: '$JSON;cloud;id:s2;meta;title', en: 'Service 2 EN' },
+      { KEY: '$JII;cloud;id:s1;config;name', en: 'Service 1 EN', fr: 'Service 1 FR' },
+      { KEY: '$JII;cloud;id:s1;config;desc', en: 'Desc 1 EN', fr: 'Desc 1 FR' },
+      { KEY: '$JII;cloud;id:s2;meta;title', en: 'Service 2 EN' },
       { KEY: 'regular.key', en: 'Regular Value' },
     ]
     const locales = ['en', 'fr']
     const filePath = 'test.csv'
 
-    it('should process $JSON keys and group them', () => {
-      const options = { ...mockDefaultOptions, jsonProcessor: true, jsonProcessorClean: true, outDir: 'dist' }
+    it('should process $JII keys and group them', () => {
+      const options = { ...mockDefaultOptions, jiiProcessor: true, jiiProcessorClean: true, outDir: 'dist' }
       const { remainingRows, outputs } = processJsonKeys(rows, filePath, options, locales)
 
       expect(remainingRows).toEqual([{ KEY: 'regular.key', en: 'Regular Value' }])
@@ -232,8 +232,8 @@ describe('helper Utilities - utils.ts', () => {
     it('should parse valid $FILE command with extension', () => {
       expect(parseFileCommand('$FILE;terms;md', 'f.csv')).toEqual({ fileName: 'terms', extension: 'md' })
     })
-    it('should parse valid $FILE command without extension (defaults to txt)', () => {
-      expect(parseFileCommand('$FILE;readme', 'f.csv')).toEqual({ fileName: 'readme', extension: 'txt' })
+    it('should parse valid $FILE command without extension', () => {
+      expect(parseFileCommand('$FILE;readme', 'f.csv')).toEqual({ fileName: 'readme', extension: undefined })
     })
     it('should return null for invalid format', () => {
       expect(parseFileCommand('$FILE;', 'f.csv')).toBeNull() // Empty filename
@@ -265,7 +265,7 @@ describe('helper Utilities - utils.ts', () => {
       const readmeFr = outputs.find(o => o.outputPath.endsWith('readme_fr.md'))
       expect(readmeFr?.content).toBe('Readme FR')
 
-      const notesEn = outputs.find(o => o.outputPath.endsWith('notes_en.txt'))
+      const notesEn = outputs.find(o => o.outputPath.endsWith('notes_en'))
       expect(notesEn?.content).toBe('Notes EN Only')
     })
   })

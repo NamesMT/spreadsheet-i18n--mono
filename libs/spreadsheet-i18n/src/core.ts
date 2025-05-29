@@ -30,8 +30,8 @@ export type ResolvedOptions = Options & Required<Pick<Options, 'include' |
   'mergeOutput' |
   'preserveStructure' |
   'replacePunctuationSpace' |
-  'jsonProcessor' |
-  'jsonProcessorClean' |
+  'jiiProcessor' |
+  'jiiProcessorClean' |
   'fileProcessor' |
   'fileProcessorClean'>>
 
@@ -44,8 +44,8 @@ export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'inc
   'mergeOutput' |
   'preserveStructure' |
   'replacePunctuationSpace' |
-  'jsonProcessor' |
-  'jsonProcessorClean' |
+  'jiiProcessor' |
+  'jiiProcessorClean' |
   'fileProcessor' |
   'fileProcessorClean'> = {
   include: /(?:[/\\]|^)i18n\.[cdt]sv$/,
@@ -60,8 +60,8 @@ export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'inc
   mergeOutput: true,
   preserveStructure: false,
   replacePunctuationSpace: true,
-  jsonProcessor: false,
-  jsonProcessorClean: true,
+  jiiProcessor: false,
+  jiiProcessorClean: true,
   fileProcessor: false,
   fileProcessorClean: true,
   delimiter: undefined,
@@ -94,14 +94,14 @@ export function processSheetContent(
   let dataForStandardProcessing = [...rowsAfterEmptyKeyFilter]
   const allSpecialOutputs: SpecialFileProcessedOutput[] = []
 
-  if (resolvedOptions.jsonProcessor) {
+  if (resolvedOptions.jiiProcessor) {
     const { remainingRows, outputs } = processJsonKeys(
       dataForStandardProcessing,
       filePath,
       resolvedOptions,
       detectedLocales,
     )
-    if (resolvedOptions.jsonProcessorClean) {
+    if (resolvedOptions.jiiProcessorClean) {
       dataForStandardProcessing = remainingRows
     }
     allSpecialOutputs.push(...outputs)

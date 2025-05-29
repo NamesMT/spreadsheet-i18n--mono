@@ -12,7 +12,7 @@ it('scanConvert', async () => {
       outDir: resolve(import.meta.dirname, '.output'),
       include: /(?:\/|\\|^)i18n_\w*\.csv$/,
       fileProcessor: true,
-      jsonProcessor: true,
+      jiiProcessor: true,
     },
     resolve(import.meta.dirname),
   )
