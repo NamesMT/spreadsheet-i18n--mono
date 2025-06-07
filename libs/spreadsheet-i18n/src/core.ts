@@ -17,7 +17,7 @@ import {
   normalizePatterns,
   parseCsvData,
   processFileKeys,
-  processJsonKeys,
+  processJiiKeys,
 } from './helpers/utils'
 
 // Internal type for options after defaults have been applied.
@@ -67,40 +67,49 @@ export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'inc
   delimiter: undefined,
 }
 
-export function processSheetContent(
-  fileContent: string,
-  filePath: string,
-  options?: Options,
-): {
+interface ProcessSheetContentParams {
+  fileContent: string
+  filePath: string
+  options?: Options
+  cwd?: string
+}
+
+export function processSheetContent({
+  fileContent,
+  filePath,
+  options,
+  cwd,
+}: ProcessSheetContentParams): {
     i18nOutputs: ProcessedSheetData[]
     specialOutputs: SpecialFileProcessedOutput[]
   } {
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
   const parsedPath = parse(filePath)
 
-  const csvStringAfterComments = filterCommentRows(fileContent, resolvedOptions.comments)
-  const { data: parsedRows, meta: parseMeta } = parseCsvData(csvStringAfterComments, resolvedOptions.delimiter, filePath)
+  const csvStringAfterComments = filterCommentRows({ csvString: fileContent, commentsConfig: resolvedOptions.comments })
+  const { data: parsedRows, meta: parseMeta } = parseCsvData({ csvString: csvStringAfterComments, delimiter: resolvedOptions.delimiter, logName: filePath })
 
   const detectedLocales = (parseMeta?.fields || []).filter((field: string) =>
     field.match(resolvedOptions.localesMatcher),
   )
 
-  const { filteredRows: rowsAfterEmptyKeyFilter } = filterRowsWithEmptyKeys(
-    parsedRows,
-    resolvedOptions.keyColumn,
-    filePath,
-  )
+  const { filteredRows: rowsAfterEmptyKeyFilter } = filterRowsWithEmptyKeys({
+    dataRows: parsedRows,
+    keyColumn: resolvedOptions.keyColumn,
+    logName: filePath,
+  })
 
   let dataForStandardProcessing = [...rowsAfterEmptyKeyFilter]
   const allSpecialOutputs: SpecialFileProcessedOutput[] = []
 
   if (resolvedOptions.jiiProcessor) {
-    const { remainingRows, outputs } = processJsonKeys(
-      dataForStandardProcessing,
+    const { remainingRows, outputs } = processJiiKeys({
+      dataRows: dataForStandardProcessing,
       filePath,
       resolvedOptions,
-      detectedLocales,
-    )
+      locales: detectedLocales,
+      cwd,
+    })
     if (resolvedOptions.jiiProcessorClean) {
       dataForStandardProcessing = remainingRows
     }
@@ -108,34 +117,43 @@ export function processSheetContent(
   }
 
   if (resolvedOptions.fileProcessor) {
-    const { remainingRows, outputs } = processFileKeys(
-      dataForStandardProcessing,
+    const { remainingRows, outputs } = processFileKeys({
+      dataRows: dataForStandardProcessing,
       filePath,
       resolvedOptions,
-      detectedLocales,
-    )
+      locales: detectedLocales,
+      cwd,
+    })
     if (resolvedOptions.fileProcessorClean) {
       dataForStandardProcessing = remainingRows
     }
     allSpecialOutputs.push(...outputs)
   }
 
-  const standardI18nOutputs = generateStandardI18nOutputs(
-    dataForStandardProcessing,
+  const standardI18nOutputs = generateStandardI18nOutputs({
+    dataRows: dataForStandardProcessing,
     resolvedOptions,
     detectedLocales,
     parsedPath,
     filePath,
-  )
+    cwd,
+  })
 
   return { i18nOutputs: standardI18nOutputs, specialOutputs: allSpecialOutputs }
 }
 
-export async function processSheetFile(
-  filePath: string,
-  options?: Options,
-  cwd: string = resolve(),
-): Promise<void> {
+interface ProcessSheetFileParams {
+  filePath: string
+  options?: Options
+  cwd?: string
+}
+
+export async function processSheetFile({
+  filePath,
+  options,
+  cwd,
+}: ProcessSheetFileParams): Promise<void> {
+  cwd = cwd ? resolve(cwd) : resolve()
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
 
   const parsedPath = parse(filePath)
@@ -149,10 +167,9 @@ export async function processSheetFile(
 
   if (!allowedExtensions.includes(parsedPath.ext.toLowerCase())) {
     logger.error(
-      `[sheetI18n] Unexpected extension: ${filePath}${
-        spreadsheetExtensions.includes(parsedPath.ext.toLowerCase()) && !resolvedOptions.xlsx
-          ? '. XLSX processing is not enabled. Set `xlsx: true` in options.'
-          : ''
+      `[sheetI18n] Unexpected extension: ${filePath}${spreadsheetExtensions.includes(parsedPath.ext.toLowerCase()) && !resolvedOptions.xlsx
+        ? '. XLSX processing is not enabled. Set `xlsx: true` in options.'
+        : ''
       }`,
     )
     return
@@ -180,7 +197,12 @@ export async function processSheetFile(
     return
   }
 
-  const { i18nOutputs, specialOutputs } = processSheetContent(fileContentString, filePath, resolvedOptions)
+  const { i18nOutputs, specialOutputs } = processSheetContent({
+    fileContent: fileContentString,
+    filePath,
+    options: resolvedOptions,
+    cwd,
+  })
 
   for (const { outputPath, data } of i18nOutputs) {
     if (!data || Object.keys(data).length === 0) {
@@ -224,10 +246,10 @@ export async function processSheetFile(
  * now, if you specify some glob patterns, the initial scan will use those patterns, then regexp filters is applied afterwards.
  */
 export async function scanConvert(options?: Options, cwd?: string): Promise<void> {
+  cwd = cwd ? resolve(cwd) : resolve()
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
-  const effectiveCwd = cwd ? resolve(cwd) : resolve()
 
-  logger.info(`[sheetI18n] Scanning directory: ${effectiveCwd}`)
+  logger.info(`[sheetI18n] Scanning directory: ${cwd}`)
   logger.debug(`[sheetI18n] Resolved options for scan: ${JSON.stringify(resolvedOptions, null, 2)}`)
 
   const { globs: includeGlobs, regexps: includeRegexps } = normalizePatterns(resolvedOptions.include)
@@ -246,13 +268,13 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
   let files: string[] = []
   try {
     files = await glob(globsToSearch, {
-      cwd: effectiveCwd,
+      cwd,
       ignore: excludeGlobs,
       absolute: true,
       dot: true,
       onlyFiles: true,
     })
-    logger.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${effectiveCwd}): ${JSON.stringify(files)}`)
+    logger.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${cwd}): ${JSON.stringify(files)}`)
   }
   catch (error: any) {
     logger.error(`[sheetI18n] Error during globbing: ${error.message}`)
@@ -263,7 +285,7 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
     // filePath is absolute here. For regex matching, it's often better to use relative paths
     // or ensure regexes are written to handle absolute paths if necessary.
     // The old context used relativePath for filter. Let's stick to that for regex.
-    const relativeFilePath = relative(effectiveCwd, filePath)
+    const relativeFilePath = relative(cwd, filePath)
 
     // Apply include Regexps:
     // If includeGlobs were used, files are already pre-filtered by them.
@@ -295,7 +317,7 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
 
   for (const filePath of filteredFiles) {
     // processSheetFile expects absolute paths for filePath, and cwd for relative logging
-    await processSheetFile(filePath, resolvedOptions, effectiveCwd)
+    await processSheetFile({ filePath, options: resolvedOptions, cwd })
   }
 
   logger.info('[sheetI18n] Scan and convert finished.')

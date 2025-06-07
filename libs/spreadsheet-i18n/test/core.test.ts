@@ -2,7 +2,7 @@ import type { Options } from '#src/types.js'
 import * as coreFunctions from '#src/core.js'
 import * as fsUtils from '#src/helpers/fs.js'
 import { logger } from '#src/helpers/logger.js'
-import { dirname, relative, resolve } from 'pathe'
+import { relative, resolve } from 'pathe'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock logger
@@ -46,7 +46,7 @@ describe('core Functions', () => {
       const csvContent = `KEY,en,fr\nhello,Hello,Bonjour`
       const filePath = 'i18n.csv'
       const options: Options = {}
-      const { i18nOutputs, specialOutputs } = coreFunctions.processSheetContent(csvContent, filePath, options)
+      const { i18nOutputs, specialOutputs } = coreFunctions.processSheetContent({ fileContent: csvContent, filePath, options })
 
       expect(i18nOutputs).toHaveLength(2)
       expect(i18nOutputs[0].locale).toBe('en')
@@ -62,7 +62,7 @@ describe('core Functions', () => {
       const csvContent = `KEY,VALUE\ngreeting,Hi there`
       const filePath = 'data.csv'
       const options: Options = { valueColumn: 'VALUE' }
-      const { i18nOutputs } = coreFunctions.processSheetContent(csvContent, filePath, options)
+      const { i18nOutputs } = coreFunctions.processSheetContent({ fileContent: csvContent, filePath, options })
 
       expect(i18nOutputs).toHaveLength(1)
       expect(i18nOutputs[0].locale).toBe('data')
@@ -74,7 +74,7 @@ describe('core Functions', () => {
       const csvContent = `KEY,en\n// This is a comment\nwelcome,Welcome`
       const filePath = 'i18n.csv'
       const options: Options = { comments: '//' }
-      const { i18nOutputs } = coreFunctions.processSheetContent(csvContent, filePath, options)
+      const { i18nOutputs } = coreFunctions.processSheetContent({ fileContent: csvContent, filePath, options })
       expect(i18nOutputs[0].data).toEqual({ welcome: 'Welcome' })
     })
 
@@ -82,7 +82,7 @@ describe('core Functions', () => {
       const csvContent = `KEY,en\napp.title,My App`
       const filePath = 'i18n.csv'
       const options: Options = { keyStyle: 'nested' }
-      const { i18nOutputs } = coreFunctions.processSheetContent(csvContent, filePath, options)
+      const { i18nOutputs } = coreFunctions.processSheetContent({ fileContent: csvContent, filePath, options })
       expect(i18nOutputs[0].data).toEqual({ app: { title: 'My App' } })
     })
 
@@ -99,7 +99,7 @@ describe('core Functions', () => {
 
     it('should read CSV, process content, and output JSON files', async () => {
       const options: Options = {}
-      await coreFunctions.processSheetFile(testFilePath, options, testRootDir)
+      await coreFunctions.processSheetFile({ filePath: testFilePath, options, cwd: testRootDir })
 
       expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(testFilePath)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledTimes(1)
@@ -116,7 +116,7 @@ describe('core Functions', () => {
 
     it('should use outputFile when mergeOutput is false', async () => {
       const options: Options = { mergeOutput: false }
-      await coreFunctions.processSheetFile(testFilePath, options, testRootDir)
+      await coreFunctions.processSheetFile({ filePath: testFilePath, options, cwd: testRootDir })
       expect(mockedFsUtils.outputFile).toHaveBeenCalledTimes(1)
       expect(mockedFsUtils.outputFile).toHaveBeenCalledWith(
         resolve(testRootDir, 'en.json'),
@@ -129,7 +129,7 @@ describe('core Functions', () => {
       const xlsxFilePath = resolve('test-data/i18n.xlsx')
       mockedFsUtils.readXlsxFile.mockReturnValue(`KEY,en\nexcel.key,Excel Value`)
       const options: Options = { xlsx: true }
-      await coreFunctions.processSheetFile(xlsxFilePath, options, testRootDir)
+      await coreFunctions.processSheetFile({ filePath: xlsxFilePath, options, cwd: testRootDir })
 
       expect(mockedFsUtils.readXlsxFile).toHaveBeenCalledWith(xlsxFilePath)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
@@ -141,7 +141,7 @@ describe('core Functions', () => {
 
     it('should log error for unsupported file types', async () => {
       const unsupportedFilePath = resolve('test-data/i18n.txt')
-      await coreFunctions.processSheetFile(unsupportedFilePath, {}, testRootDir)
+      await coreFunctions.processSheetFile({ filePath: unsupportedFilePath, options: {}, cwd: testRootDir })
       expect(mockedLogger.error).toHaveBeenCalledWith(expect.stringContaining(`[sheetI18n] Unexpected extension: ${unsupportedFilePath}`))
     })
   })
@@ -215,7 +215,7 @@ describe('core Functions', () => {
       expect(mockedLogger.info).toHaveBeenCalledWith(`[sheetI18n] Scanning directory: ${customScanDir}`)
       expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
-        resolve(defaultScanDir, 'dist/locales', relative(defaultScanDir, dirname(file1Path)), 'en.json'),
+        resolve(defaultScanDir, 'dist/locales', 'data/projectA', 'en.json'),
         JSON.stringify({ 'app.title': 'My App' }, null, 2),
         { encoding: 'utf8', mergeContent: 'json' },
       )

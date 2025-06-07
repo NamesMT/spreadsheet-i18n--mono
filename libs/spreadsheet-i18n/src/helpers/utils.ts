@@ -33,13 +33,21 @@ export function isEmptyCell(cellValue: unknown, quoteChar: string = '"'): boolea
 /**
  * Transforms an array of records into an i18n-compatible object.
  */
-export function transformToI18n(
-  records: Record<string, any>[],
-  keyCol: string,
-  valueCol: string,
-  keyStyle: Options['keyStyle'],
-  transformOptions: { replacePunctuationSpace?: boolean } = {},
-): Record<string, any> {
+interface TransformToI18nParams {
+  records: Record<string, any>[]
+  keyCol: string
+  valueCol: string
+  keyStyle: Options['keyStyle']
+  transformOptions?: { replacePunctuationSpace?: boolean }
+}
+
+export function transformToI18n({
+  records,
+  keyCol,
+  valueCol,
+  keyStyle,
+  transformOptions = {},
+}: TransformToI18nParams): Record<string, any> {
   const i18nObject: Record<string, any> = {}
   records.forEach((item) => {
     const key = objectGet(item, keyCol)
@@ -77,7 +85,11 @@ export function transformToI18n(
   return i18nObject
 }
 
-export function filterCommentRows(csvString: string, commentsConfig: ResolvedOptions['comments']): string {
+interface FilterCommentRowsParams {
+  csvString: string
+  commentsConfig: ResolvedOptions['comments']
+}
+export function filterCommentRows({ csvString, commentsConfig }: FilterCommentRowsParams): string {
   // If commentsConfig is explicitly false, or if it's an empty string or empty array (which are falsy but not `false`),
   // we should not attempt to filter comments.
   if (commentsConfig === false || (typeof commentsConfig === 'string' && commentsConfig === '') || (Array.isArray(commentsConfig) && commentsConfig.length === 0)) {
@@ -97,11 +109,16 @@ export function filterCommentRows(csvString: string, commentsConfig: ResolvedOpt
     .join('\r\n')
 }
 
-export function parseCsvData(
-  csvString: string,
-  delimiter: ResolvedOptions['delimiter'],
-  filePath: string, // For logging
-): { data: Record<string, any>[], meta: ParseMeta | undefined, errors: ParseError[] } {
+interface ParseCsvDataParams {
+  csvString: string
+  delimiter: ResolvedOptions['delimiter']
+  logName: string
+}
+export function parseCsvData({
+  csvString,
+  delimiter,
+  logName,
+}: ParseCsvDataParams): { data: Record<string, any>[], meta: ParseMeta | undefined, errors: ParseError[] } {
   const result = Papa.parse<Record<string, any>>(csvString, {
     skipEmptyLines: true,
     header: true,
@@ -109,17 +126,22 @@ export function parseCsvData(
     dynamicTyping: false,
   })
 
-  if (result.errors && result.errors.length > 0) {
-    logger.error(`[sheetI18n] CSV Parsing errors in ${filePath}: ${result.errors.map(e => e.message).join(', ')}`)
-  }
+  if (result.errors && result.errors.length > 0)
+    logger.error(`[sheetI18n] CSV parsing errors in ${logName}: ${result.errors.map(e => e.message).join(', ')}`)
+
   return { data: result.data || [], meta: result.meta, errors: result.errors || [] }
 }
 
-export function filterRowsWithEmptyKeys(
-  dataRows: Record<string, any>[],
-  keyColumn: string,
-  filePath: string, // For logging
-): { filteredRows: Record<string, any>[], skippedCount: number } {
+interface FilterRowsWithEmptyKeysParams {
+  dataRows: Record<string, any>[]
+  keyColumn: string
+  logName: string
+}
+export function filterRowsWithEmptyKeys({
+  dataRows,
+  keyColumn,
+  logName,
+}: FilterRowsWithEmptyKeysParams): { filteredRows: Record<string, any>[], skippedCount: number } {
   let skippedCount = 0
   const filteredRows = dataRows.filter((row) => {
     if (!isEmptyCell(row[keyColumn])) {
@@ -129,14 +151,14 @@ export function filterRowsWithEmptyKeys(
     return false
   })
   if (skippedCount > 0) {
-    logger.info(`[sheetI18n] ${filePath}: ${skippedCount} rows with empty key skipped.`)
+    logger.info(`[sheetI18n] ${logName}: ${skippedCount} rows with empty key skipped.`)
   }
   return { filteredRows, skippedCount }
 }
 
 // --- Special Key Parsers and Processors ---
 
-export interface ParsedJsonCommand {
+export interface ParsedJiiCommand {
   id: string
   rawPrimaries: string
   pathStr: string
@@ -188,20 +210,15 @@ export interface ParsedJsonCommand {
  *   // ... other items sharing the same fileName and primaries
  * ]
  * ```
- *
- * @param keyCell The string from the key column.
- * @param filePath The path of the source spreadsheet file (for logging).
- * @returns A parsed command object or null if the format is invalid.
  */
-export function parseJsonCommand(keyCell: string, filePath: string): ParsedJsonCommand | null {
+export function parseJiiCommand(keyCell: string): ParsedJiiCommand | undefined {
   if (!keyCell.startsWith('$JII;'))
-    return null
+    return
 
   const parts = keyCell.replace('$JII;', '').split(';')
-  if (parts.length !== 4 || !parts.every(Boolean)) {
-    logger.error(`[sheetI18n] ${filePath}: Invalid $JII command format: ${keyCell}`)
-    return null
-  }
+  if (parts.length !== 4 || !parts.every(Boolean))
+    throw new Error('Invalid format')
+
   const [id, rawPrimaries, pathStr, key] = parts
   const primaries = rawPrimaries.split(',').map((s: string) => s.split(':'))
   return { id, rawPrimaries, pathStr, key, primaries }
@@ -241,20 +258,15 @@ export interface ParsedFileCommand {
  * { fileName: 'readme', extension: undefined }
  * ```
  * This would generate files like `readme_en`, `readme_fr`, etc.
- *
- * @param keyCell The string from the key column.
- * @param filePath The path of the source spreadsheet file (for logging).
- * @returns A parsed command object or null if the format is invalid.
  */
-export function parseFileCommand(keyCell: string, filePath: string): ParsedFileCommand | null {
+export function parseFileCommand(keyCell: string): ParsedFileCommand | undefined {
   if (!keyCell.startsWith('$FILE;'))
-    return null
+    return
 
   const parts = keyCell.replace('$FILE;', '').split(';')
-  if (parts.length < 1 || parts.length > 2 || !parts[0]) {
-    logger.error(`[sheetI18n] ${filePath}: Invalid $FILE command format: ${keyCell}`)
-    return null
-  }
+  if (parts.length < 1 || parts.length > 2 || !parts[0])
+    throw new Error('Invalid format')
+
   const [fileName, extension] = parts
   return { fileName, extension }
 }
@@ -267,34 +279,46 @@ export function parseFileCommand(keyCell: string, filePath: string): ParsedFileC
  *
  * Each object in the array will contain the primary key-value pairs and the nested translations.
  *
- * @param dataRows Rows parsed from the spreadsheet.
- * @param filePath Path of the source file (for logging).
- * @param resolvedOptions The resolved processing options.
- * @param locales Detected locale codes from the spreadsheet headers.
  * @returns An object containing rows that were not processed (remainingRows)
  *          and an array of special file outputs (outputs).
  */
-export function processJsonKeys(
-  dataRows: Record<string, any>[],
-  filePath: string,
-  resolvedOptions: ResolvedOptions,
-  locales: string[],
-): { remainingRows: Record<string, any>[], outputs: SpecialFileProcessedOutput[] } {
+interface ProcessJiiKeysParams {
+  dataRows: Record<string, any>[]
+  filePath: string
+  resolvedOptions: ResolvedOptions
+  locales: string[]
+  cwd?: string
+}
+export function processJiiKeys({
+  dataRows,
+  filePath,
+  resolvedOptions,
+  locales,
+  cwd,
+}: ProcessJiiKeysParams): { remainingRows: Record<string, any>[], outputs: SpecialFileProcessedOutput[] } {
   const outputs: SpecialFileProcessedOutput[] = []
   const jsonStore: Record<string, Record<string, any>> = {} // { [id]: { rawPrimaries: data } }
 
   const remainingRows = dataRows.filter((row) => {
     const keyCell = String(row[resolvedOptions.keyColumn] || '')
-    const command = parseJsonCommand(keyCell, filePath)
+    let command: ReturnType<typeof parseJiiCommand>
+    try {
+      command = parseJiiCommand(keyCell)
+    }
+    catch (e: any) {
+      if (e?.message === 'Invalid format')
+        logger.warn(`[sheetI18n] ${filePath}: $JII key found but invalid format: ${keyCell}`)
+    }
 
+    // If not $JII key or invalid
     if (!command) {
-      // If it's not a $JII key or invalid, keep it for further processing (or filter if invalid and strict)
-      return !keyCell.startsWith('$JII;') // Only keep if not an attempted (but invalid) $JII key
+      // Filter out if invalid
+      return !keyCell.startsWith('$JII;')
     }
 
     if (!locales.length) {
-      logger.warn(`[sheetI18n] ${filePath}: $JII key found but no locales detected. Skipping row: ${keyCell}`)
-      return false // This row is processed (skipped)
+      logger.warn(`[sheetI18n] ${filePath}: $JII key found but no locales detected: ${keyCell}`)
+      return false
     }
 
     const { id, rawPrimaries, pathStr, key, primaries } = command
@@ -320,7 +344,7 @@ export function processJsonKeys(
         objectSet(targetObject, [...pathStr.split('.'), 'i18n', locale, key], valToSet)
       }
     })
-    return false // This row has been processed as a $JII key
+    return false
   })
 
   Object.entries(jsonStore).forEach(([id, primaryGroups]) => {
@@ -328,7 +352,12 @@ export function processJsonKeys(
     if (outputData.length > 0) {
       const outputName = `${id}.json`
       outputs.push({
-        outputPath: resolveOutputPath({ outDir: resolvedOptions.outDir, preserveStructure: resolvedOptions.preserveStructure }, filePath, outputName),
+        outputPath: resolveOutputPath({
+          outDirOptions: resolvedOptions,
+          originalFilePath: filePath,
+          outputName,
+          cwd,
+        }),
         content: outputData,
         type: 'json',
       })
@@ -355,25 +384,40 @@ export function processJsonKeys(
  * @returns An object containing rows that were not processed (remainingRows)
  *          and an array of special file outputs (outputs).
  */
-export function processFileKeys(
-  dataRows: Record<string, any>[],
-  filePath: string,
-  resolvedOptions: ResolvedOptions,
-  locales: string[],
-): { remainingRows: Record<string, any>[], outputs: SpecialFileProcessedOutput[] } {
+interface ProcessFileKeysParams {
+  dataRows: Record<string, any>[]
+  filePath: string
+  resolvedOptions: ResolvedOptions
+  locales: string[]
+  cwd?: string
+}
+export function processFileKeys({
+  dataRows,
+  filePath,
+  resolvedOptions,
+  locales,
+  cwd,
+}: ProcessFileKeysParams): { remainingRows: Record<string, any>[], outputs: SpecialFileProcessedOutput[] } {
   const outputs: SpecialFileProcessedOutput[] = []
   const filesContentStore: Record<string, string> = {}
 
   const remainingRows = dataRows.filter((row) => {
     const keyCell = String(row[resolvedOptions.keyColumn] || '')
-    const command = parseFileCommand(keyCell, filePath)
+    let command: ReturnType<typeof parseFileCommand>
+    try {
+      command = parseFileCommand(keyCell)
+    }
+    catch (e: any) {
+      if (e?.message === 'Invalid format')
+        logger.warn(`[sheetI18n] ${filePath}: $FILE key found but invalid format: ${keyCell}`)
+    }
 
     if (!command) {
       return !keyCell.startsWith('$FILE;')
     }
 
     if (!locales.length) {
-      logger.warn(`[sheetI18n] ${filePath}: $FILE key found but no locales detected. Skipping row: ${keyCell}`)
+      logger.warn(`[sheetI18n] ${filePath}: $FILE key found but no locales detected: ${keyCell}`)
       return false
     }
 
@@ -390,7 +434,12 @@ export function processFileKeys(
 
   Object.entries(filesContentStore).forEach(([outputFileName, content]) => {
     outputs.push({
-      outputPath: resolveOutputPath({ outDir: resolvedOptions.outDir, preserveStructure: resolvedOptions.preserveStructure }, filePath, outputFileName),
+      outputPath: resolveOutputPath({
+        outDirOptions: resolvedOptions,
+        originalFilePath: filePath,
+        outputName: outputFileName,
+        cwd,
+      }),
       content,
       type: 'file',
     })
@@ -401,30 +450,44 @@ export function processFileKeys(
   return { remainingRows, outputs }
 }
 
-export function generateStandardI18nOutputs(
-  dataRows: Record<string, any>[],
-  resolvedOptions: ResolvedOptions,
-  detectedLocales: string[],
-  parsedPath: ParsedPath,
-  filePath: string,
-): ProcessedSheetData[] {
+interface GenerateStandardI18nOutputsParams {
+  dataRows: Record<string, any>[]
+  resolvedOptions: ResolvedOptions
+  detectedLocales: string[]
+  parsedPath: ParsedPath
+  filePath: string
+  cwd?: string
+}
+export function generateStandardI18nOutputs({
+  dataRows,
+  resolvedOptions,
+  detectedLocales,
+  parsedPath,
+  filePath,
+  cwd,
+}: GenerateStandardI18nOutputsParams): ProcessedSheetData[] {
   const i18nOutputs: ProcessedSheetData[] = []
   const currentValCol = resolvedOptions.valueColumn ?? undefined
 
   if (currentValCol) {
-    const i18nData = transformToI18n(
-      dataRows,
-      resolvedOptions.keyColumn,
-      currentValCol,
-      resolvedOptions.keyStyle,
-      { replacePunctuationSpace: resolvedOptions.replacePunctuationSpace },
-    )
+    const i18nData = transformToI18n({
+      records: dataRows,
+      keyCol: resolvedOptions.keyColumn,
+      valueCol: currentValCol!,
+      keyStyle: resolvedOptions.keyStyle,
+      transformOptions: { replacePunctuationSpace: resolvedOptions.replacePunctuationSpace },
+    })
     if (Object.keys(i18nData).length > 0) {
       const outputName = `${parsedPath.name}.json`
       i18nOutputs.push({
         locale: parsedPath.name,
         data: i18nData,
-        outputPath: resolveOutputPath({ outDir: resolvedOptions.outDir, preserveStructure: resolvedOptions.preserveStructure }, filePath, outputName),
+        outputPath: resolveOutputPath({
+          outDirOptions: resolvedOptions,
+          originalFilePath: filePath,
+          outputName,
+          cwd,
+        }),
       })
     }
   }
@@ -434,19 +497,24 @@ export function generateStandardI18nOutputs(
       return [] // Return empty if no locales and no valueColumn
     }
     detectedLocales.forEach((locale: string) => {
-      const i18nData = transformToI18n(
-        dataRows,
-        resolvedOptions.keyColumn,
-        locale,
-        resolvedOptions.keyStyle,
-        { replacePunctuationSpace: resolvedOptions.replacePunctuationSpace },
-      )
+      const i18nData = transformToI18n({
+        records: dataRows,
+        keyCol: resolvedOptions.keyColumn,
+        valueCol: locale,
+        keyStyle: resolvedOptions.keyStyle,
+        transformOptions: { replacePunctuationSpace: resolvedOptions.replacePunctuationSpace },
+      })
       if (Object.keys(i18nData).length > 0) {
         const outputName = `${locale}.json`
         i18nOutputs.push({
           locale,
           data: i18nData,
-          outputPath: resolveOutputPath({ outDir: resolvedOptions.outDir, preserveStructure: resolvedOptions.preserveStructure }, filePath, outputName),
+          outputPath: resolveOutputPath({
+            outDirOptions: resolvedOptions,
+            originalFilePath: filePath,
+            outputName,
+            cwd,
+          }),
         })
       }
     })
@@ -454,14 +522,21 @@ export function generateStandardI18nOutputs(
   return i18nOutputs
 }
 
-export function resolveOutputPath(
-  options: { outDir?: string | null, preserveStructure?: Options['preserveStructure'] },
-  originalFilePath: string,
-  outputName: string,
-): string {
-  const cwd = resolve()
+interface ResolveOutputPathParams {
+  outDirOptions: { outDir?: string | null, preserveStructure?: Options['preserveStructure'] }
+  originalFilePath: string
+  outputName: string
+  cwd?: string
+}
+export function resolveOutputPath({
+  outDirOptions,
+  originalFilePath,
+  outputName,
+  cwd,
+}: ResolveOutputPathParams): string {
+  cwd = cwd ? resolve(cwd) : resolve()
   const parsedOriginalPath = parse(originalFilePath)
-  const currentOutDir = options.outDir ?? undefined
+  const currentOutDir = outDirOptions.outDir ?? undefined
 
   if (!currentOutDir) {
     return resolve(parsedOriginalPath.dir, outputName)
@@ -469,7 +544,7 @@ export function resolveOutputPath(
 
   const relativeOriginalDir = dirname(relative(cwd, originalFilePath))
 
-  switch (options.preserveStructure) {
+  switch (outDirOptions.preserveStructure) {
     case true:
     case 'parent':
       return resolve(currentOutDir, relativeOriginalDir, outputName)
@@ -477,7 +552,7 @@ export function resolveOutputPath(
       return resolve(currentOutDir, relativeOriginalDir, parsedOriginalPath.name, outputName)
     case 'prefixed':
       return resolve(currentOutDir, relativeOriginalDir, `${parsedOriginalPath.name}_${outputName}`)
-    default: // 'false' or undefined
+    default:
       return resolve(currentOutDir, outputName)
   }
 }

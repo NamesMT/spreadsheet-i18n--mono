@@ -184,6 +184,8 @@ export interface Options {
    * @default true
    */
   fileProcessorClean?: boolean
+
+  cwd?: string
 }
 
 export interface ProcessedSheetData {
