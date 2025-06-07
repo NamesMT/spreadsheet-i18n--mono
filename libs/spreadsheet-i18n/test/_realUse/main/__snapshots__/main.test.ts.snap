@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`scanConvert 1`] = `
+"{
+  "frenchSpaceStyleTest": "Bonjour !",
+  "hello2": "Hello There!",
+  "helloF2": "Hello There!"
+}"
+`;

@@ -217,7 +217,7 @@ export async function processSheetFile({
       else {
         await outputFile(outputPath, fileData, { encoding: 'utf8' })
       }
-      logger.info(`[sheetI18n] Generated: ${relative(cwd, outputPath)}`)
+      logger.info(`[sheetI18n] Generated: ${relative(resolvedOptions.outDir ?? cwd, outputPath)}`)
     }
     catch (error: any) {
       logger.error(`[sheetI18n] Error writing JSON output to ${outputPath}: ${error.message}`)
@@ -228,7 +228,7 @@ export async function processSheetFile({
     try {
       const fileData: string = type === 'json' ? JSON.stringify(content, null, 2) : content as string
       await outputFile(outputPath, fileData, { encoding: 'utf8' })
-      logger.info(`[sheetI18n] Generated (special): ${relative(cwd, outputPath)}`)
+      logger.info(`[sheetI18n] Generated (special): ${relative(resolvedOptions.outDir ?? cwd, outputPath)}`)
     }
     catch (error: any) {
       logger.error(`[sheetI18n] Error writing special output to ${outputPath}: ${error.message}`)

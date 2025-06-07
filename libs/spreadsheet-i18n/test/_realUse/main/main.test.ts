@@ -1,7 +1,7 @@
-import { rm } from 'node:fs/promises'
+import { readFile, rm } from 'node:fs/promises'
 import { scanConvert } from '#src/core.js'
 import { resolve } from 'pathe'
-import { it } from 'vitest'
+import { expect, it } from 'vitest'
 
 it('scanConvert', async () => {
   // Clean up output dir
@@ -13,7 +13,10 @@ it('scanConvert', async () => {
       include: /(?:\/|\\|^)i18n_\w*\.csv$/,
       fileProcessor: true,
       jiiProcessor: true,
+      preserveStructure: true,
     },
     resolve(import.meta.dirname),
   )
+
+  await expect(readFile(resolve(import.meta.dirname, '.output/sheets/en.json'), 'utf8')).resolves.toMatchSnapshot()
 })
