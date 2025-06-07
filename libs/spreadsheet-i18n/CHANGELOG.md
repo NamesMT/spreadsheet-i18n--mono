@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.2
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.1...spreadsheet-i18n-v0.3.2)
+
+### 🏡 Chore
+
+- Apply lint fixes ([47151a2](https://github.com/namesmt/spreadsheet-i18n--mono/commit/47151a2))
+
+### 🎨 Styles
+
+- Cleaner `Generated` log messages ([aaa2746](https://github.com/namesmt/spreadsheet-i18n--mono/commit/aaa2746))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.1
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.0...spreadsheet-i18n-v0.3.1)
