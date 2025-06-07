@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.0
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.2.0...spreadsheet-i18n-v0.3.0)
+
+### 💅 Refactors
+
+- ⚠️  Majorly refactor the codebase, `preserveStructure` should work more intuitive when custom `cwd` is set ([d745b31](https://github.com/namesmt/spreadsheet-i18n--mono/commit/d745b31))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Majorly refactor the codebase, `preserveStructure` should work more intuitive when custom `cwd` is set ([d745b31](https://github.com/namesmt/spreadsheet-i18n--mono/commit/d745b31))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.2.0
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.1.4...spreadsheet-i18n-v0.2.0)
