@@ -21,33 +21,33 @@ import {
 } from './helpers/utils'
 
 // Internal type for options after defaults have been applied.
-export type ResolvedOptions = Options & Required<Pick<Options, 'include' |
-  'keyStyle' |
-  'keyColumn' |
-  'localesMatcher' |
-  'comments' |
-  'xlsx' |
-  'mergeOutput' |
-  'preserveStructure' |
-  'replacePunctuationSpace' |
-  'jiiProcessor' |
-  'jiiProcessorClean' |
-  'fileProcessor' |
-  'fileProcessorClean'>>
+export type ResolvedOptions = Options & Required<Pick<Options, 'include'
+  | 'keyStyle'
+  | 'keyColumn'
+  | 'localesMatcher'
+  | 'comments'
+  | 'xlsx'
+  | 'mergeOutput'
+  | 'preserveStructure'
+  | 'replacePunctuationSpace'
+  | 'jiiProcessor'
+  | 'jiiProcessorClean'
+  | 'fileProcessor'
+  | 'fileProcessorClean'>>
 
-export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'include' |
-  'keyStyle' |
-  'keyColumn' |
-  'localesMatcher' |
-  'comments' |
-  'xlsx' |
-  'mergeOutput' |
-  'preserveStructure' |
-  'replacePunctuationSpace' |
-  'jiiProcessor' |
-  'jiiProcessorClean' |
-  'fileProcessor' |
-  'fileProcessorClean'> = {
+export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'include'
+  | 'keyStyle'
+  | 'keyColumn'
+  | 'localesMatcher'
+  | 'comments'
+  | 'xlsx'
+  | 'mergeOutput'
+  | 'preserveStructure'
+  | 'replacePunctuationSpace'
+  | 'jiiProcessor'
+  | 'jiiProcessorClean'
+  | 'fileProcessor'
+  | 'fileProcessorClean'> = {
   include: /(?:[/\\]|^)i18n\.[cdt]sv$/,
   exclude: undefined,
   outDir: undefined,
