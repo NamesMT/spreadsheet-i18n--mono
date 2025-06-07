@@ -20,7 +20,7 @@
 
 ## Features
 
-+ Supports CSV, TSV, DSV, Excel/Spreadsheets (XLS[XMB], ODT), powered by [SheetJS](https://sheetjs.com/) and [papaparse](https://www.papaparse.com/)
++ Supports CSV, TSV, DSV, Excel/Spreadsheets (XLS[XMB], [F]ODS), powered by [SheetJS](https://sheetjs.com/) and [papaparse](https://www.papaparse.com/)
 + File-to-file convert: `en.csv -> en.json`
 + File-to-multiple convert: `i18n.csv -> en.json, vi.json, fr.json,...`
 + Output merging: `i18n_a.csv + i18n_b.csv -> en.json`
