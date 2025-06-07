@@ -1,6 +1,18 @@
 # Changelog
 
 
+## unplugin-spreadsheet-i18n-v0.3.1
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.3.0...unplugin-spreadsheet-i18n-v0.3.1)
+
+### 🩹 Fixes
+
+- Syntax changed ([ed9ad43](https://github.com/namesmt/spreadsheet-i18n--mono/commit/ed9ad43))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## unplugin-spreadsheet-i18n-v0.3.0
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.2.0...unplugin-spreadsheet-i18n-v0.3.0)
