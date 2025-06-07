@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.1
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.0...spreadsheet-i18n-v0.3.1)
+
+### 📖 Documentation
+
+- **README:** Correct ODS format ([4af2c88](https://github.com/namesmt/spreadsheet-i18n--mono/commit/4af2c88))
+
+### 🏡 Chore
+
+- Update deps ([507d567](https://github.com/namesmt/spreadsheet-i18n--mono/commit/507d567))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.0
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.2.0...spreadsheet-i18n-v0.3.0)
