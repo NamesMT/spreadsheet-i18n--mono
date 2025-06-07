@@ -72,8 +72,8 @@
   },
   "peerDependencies": {
     "@farmfe/core": ">=1.7.5",
-    "@nuxt/kit": "^3.17.4",
-    "@nuxt/schema": "^3.17.4",
+    "@nuxt/kit": "^3.17.5",
+    "@nuxt/schema": "^3.17.5",
     "esbuild": "*",
     "rollup": "^3.29.5",
     "vite": ">=6.3.5",
@@ -103,20 +103,20 @@
     }
   },
   "dependencies": {
-    "spreadsheet-i18n": "^0.2.0",
+    "spreadsheet-i18n": "^0.3.0",
     "unplugin": "^2.3.5"
   },
   "devDependencies": {
-    "@nuxt/kit": "^3.17.4",
-    "@nuxt/schema": "^3.17.4",
-    "@types/node": "^22.15.24",
-    "eslint": "^9.27.0",
-    "rollup": "^4.41.1",
-    "tsdown": "^0.12.4",
+    "@nuxt/kit": "^3.17.5",
+    "@nuxt/schema": "^3.17.5",
+    "@types/node": "^22.15.30",
+    "eslint": "^9.28.0",
+    "rollup": "^4.42.0",
+    "tsdown": "^0.12.7",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.1.4",
+    "vitest": "^3.2.2",
     "webpack": "^5.99.9"
   }
 }
