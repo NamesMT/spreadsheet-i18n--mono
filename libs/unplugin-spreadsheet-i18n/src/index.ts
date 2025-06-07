@@ -15,7 +15,11 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
         cwd = resolve(config.root)
       },
       async handleHotUpdate({ file }) {
-        await processSheetFile(file, options, cwd)
+        await processSheetFile({
+          filePath: file,
+          options,
+          cwd,
+        })
       },
     },
     async buildStart() {
