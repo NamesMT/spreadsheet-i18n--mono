@@ -122,12 +122,13 @@ export function parseCsvData({
   const result = Papa.parse<Record<string, any>>(csvString, {
     skipEmptyLines: true,
     header: true,
-    delimiter: delimiter ?? undefined,
-    dynamicTyping: false,
+    delimiter,
   })
 
-  if (result.errors && result.errors.length > 0)
-    consola.error(`[sheetI18n] CSV parsing errors in ${logName}: ${result.errors.map(e => e.message).join(', ')}`)
+  if (result.errors?.length > 0) {
+    consola.warn(`[sheetI18n] There was some parsing errors in ${logName}: ${result.errors.length}`)
+    consola.debug(`[sheetI18n] Errors detail:\n${result.errors.map(e => `${e.message} [:${e.row}:${e.index}]`).join('\n')}`)
+  }
 
   return { data: result.data || [], meta: result.meta, errors: result.errors || [] }
 }

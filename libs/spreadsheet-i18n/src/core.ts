@@ -90,9 +90,7 @@ export function processSheetContent({
   const csvStringAfterComments = filterCommentRows({ csvString: fileContent, commentsConfig: resolvedOptions.comments })
   const { data: parsedRows, meta: parseMeta } = parseCsvData({ csvString: csvStringAfterComments, delimiter: resolvedOptions.delimiter, logName: filePath })
 
-  const detectedLocales = (parseMeta?.fields || []).filter((field: string) =>
-    field.match(resolvedOptions.localesMatcher),
-  )
+  const detectedLocales = (parseMeta?.fields || []).filter((field: string) => field.match(resolvedOptions.localesMatcher))
 
   const { filteredRows: rowsAfterEmptyKeyFilter } = filterRowsWithEmptyKeys({
     dataRows: parsedRows,

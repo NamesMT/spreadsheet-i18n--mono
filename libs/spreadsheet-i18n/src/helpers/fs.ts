@@ -27,12 +27,10 @@ export function readXlsxFile(filePath: string): string {
   try {
     const workbook = xlsxReadFile(filePath)
     let jsonData: Record<string, any>[] = []
-    for (const sheetName of workbook.SheetNames) {
-      const sheet = workbook.Sheets[sheetName]
-      jsonData = jsonData.concat(xlsxUtils.sheet_to_json(sheet, { header: 1 }))
+    for (const sheet of Object.values(workbook.Sheets)) {
+      jsonData = jsonData.concat(xlsxUtils.sheet_to_json(sheet))
     }
-    const newSheet = xlsxUtils.json_to_sheet(jsonData, { skipHeader: true })
-    return xlsxUtils.sheet_to_csv(newSheet, { FS: Papa.RECORD_SEP, RS: '\r\n' })
+    return xlsxUtils.sheet_to_csv(xlsxUtils.json_to_sheet(jsonData), { FS: Papa.RECORD_SEP, RS: '\r\n' })
   }
   catch (error: any) {
     consola.error(`[sheetI18n] Error reading XLSX file ${filePath}: ${error.message}`)
