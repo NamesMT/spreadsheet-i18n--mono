@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.3
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.2...spreadsheet-i18n-v0.3.3)
+
+### 🚀 Enhancements
+
+- Add `filter` param for `processFileContent`, and fixes include not applied ([fffb77f](https://github.com/namesmt/spreadsheet-i18n--mono/commit/fffb77f))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.2
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.1...spreadsheet-i18n-v0.3.2)
