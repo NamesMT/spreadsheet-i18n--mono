@@ -1,6 +1,18 @@
 # Changelog
 
 
+## unplugin-spreadsheet-i18n-v0.3.2
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.3.1...unplugin-spreadsheet-i18n-v0.3.2)
+
+### 🩹 Fixes
+
+- `handleHotUpdate` processing every file ([eea7d1b](https://github.com/namesmt/spreadsheet-i18n--mono/commit/eea7d1b))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## unplugin-spreadsheet-i18n-v0.3.1
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.3.0...unplugin-spreadsheet-i18n-v0.3.1)
