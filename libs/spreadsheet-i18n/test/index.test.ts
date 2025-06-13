@@ -5,7 +5,6 @@ describe('index', () => {
   it('should export public APIs', () => {
     expect(Object.keys(indexModule)).toMatchInlineSnapshot(`
       [
-        "logger",
         "defaultOptionsObject",
         "processSheetContent",
         "processSheetFile",

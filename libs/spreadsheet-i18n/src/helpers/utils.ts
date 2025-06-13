@@ -126,7 +126,7 @@ export function parseCsvData({
   })
 
   if (result.errors?.length > 0) {
-    consola.warn(`[sheetI18n] There was some parsing errors in ${logName}: ${result.errors.length}`)
+    consola.warn(`[sheetI18n] There was some parsing errors in ${logName}, count: ${result.errors.length}`)
     consola.debug(`[sheetI18n] Errors detail:\n${result.errors.map(e => `${e.message} [:${e.row}:${e.index}]`).join('\n')}`)
   }
 

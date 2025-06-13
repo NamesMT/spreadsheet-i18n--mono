@@ -1,13 +1,13 @@
 import type { Options } from '#src/types.js'
 import * as coreFunctions from '#src/core.js'
 import * as fsUtils from '#src/helpers/fs.js'
-import { logger } from '#src/helpers/logger.js'
+import { consola } from 'consola'
 import { relative, resolve } from 'pathe'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock logger
-vi.mock('#src/helpers/logger.js', () => ({
-  logger: {
+vi.mock('consola', () => ({
+  consola: {
     info: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
@@ -33,7 +33,7 @@ vi.mock('tinyglobby', () => ({
 }))
 
 const mockedFsUtils = vi.mocked(fsUtils)
-const mockedLogger = vi.mocked(logger)
+const mockedLogger = vi.mocked(consola)
 const mockedTinyGlobby = await import('tinyglobby').then(m => vi.mocked(m.glob))
 
 describe('core Functions', () => {

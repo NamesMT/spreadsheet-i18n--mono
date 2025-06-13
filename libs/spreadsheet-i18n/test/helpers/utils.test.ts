@@ -1,5 +1,4 @@
 import type { ResolvedOptions } from '#src/core.js'
-import { logger } from '#src/helpers/logger.js'
 import {
   filterCommentRows,
   filterRowsWithEmptyKeys,
@@ -15,11 +14,12 @@ import {
   resolveOutputPath,
   transformToI18n,
 } from '#src/helpers/utils.js'
+import { consola } from 'consola'
 import { parse, resolve } from 'pathe'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('#src/helpers/logger.js', () => ({
-  logger: {
+vi.mock('consola', () => ({
+  consola: {
     info: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
@@ -110,7 +110,7 @@ describe('helper Utilities - utils.ts', () => {
         { KEY: 'app.name.short', en: 'App' }, // conflict: app.name is string
       ]
       transformToI18n({ records: conflictRecords, keyCol: 'KEY', valueCol: 'en', keyStyle: 'nested' })
-      expect(logger.error).toHaveBeenCalledWith(expect.stringContaining('Conflict with nested key: \'app.name.short\''))
+      expect(consola.error).toHaveBeenCalledWith(expect.stringContaining('Conflict with nested key: \'app.name.short\''))
     })
   })
 
@@ -155,7 +155,7 @@ describe('helper Utilities - utils.ts', () => {
       // Malformed: inconsistent number of fields
       const csv = 'KEY,en\ngreeting,Hello,BonjourExtraField'
       parseCsvData({ csvString: csv, delimiter: undefined, logName: 'malformed.csv' })
-      expect(logger.error).toHaveBeenCalledWith(expect.stringContaining('CSV parsing errors in malformed.csv:'))
+      expect(consola.warn).toHaveBeenCalledWith(expect.stringContaining('There was some parsing errors in malformed.csv, count: 1'))
     })
   })
 
@@ -170,7 +170,7 @@ describe('helper Utilities - utils.ts', () => {
       const { filteredRows, skippedCount } = filterRowsWithEmptyKeys({ dataRows: data, keyColumn: 'ID', logName: 'test.csv' })
       expect(skippedCount).toBe(2)
       expect(filteredRows).toEqual([{ ID: 'k1', val: 'v1' }, { ID: 'k3', val: 'v3' }])
-      expect(logger.info).toHaveBeenCalledWith('[sheetI18n] test.csv: 2 rows with empty key skipped.')
+      expect(consola.info).toHaveBeenCalledWith('[sheetI18n] test.csv: 2 rows with empty key skipped.')
     })
   })
 
