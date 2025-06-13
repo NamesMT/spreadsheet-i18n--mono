@@ -1,7 +1,7 @@
 {
   "name": "spreadsheet-i18n",
   "type": "module",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Enhance internationalization (i18n) workflows with spreadsheets",
   "author": "NamesMT <dangquoctrung123@gmail.com>",
   "license": "Apache-2.0",

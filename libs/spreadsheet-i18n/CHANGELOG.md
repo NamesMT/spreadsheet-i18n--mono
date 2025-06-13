@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.4
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.3...spreadsheet-i18n-v0.3.4)
+
+### 🩹 Fixes
+
+- Xlsx reading and better parser logs ([497296f](https://github.com/namesmt/spreadsheet-i18n--mono/commit/497296f))
+
+### 🏡 Chore
+
+- Use standard `consola` instance instead, don't spam user's console in dev ([83955d2](https://github.com/namesmt/spreadsheet-i18n--mono/commit/83955d2))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.3
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.2...spreadsheet-i18n-v0.3.3)
