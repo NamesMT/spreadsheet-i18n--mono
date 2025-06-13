@@ -1,4 +1,5 @@
 import type { Options, ProcessedSheetData, SpecialFileProcessedOutput } from './types'
+import { createFilter } from '@rollup/pluginutils'
 import { defu } from 'defu'
 import { parse, relative, resolve } from 'pathe'
 import { process } from 'std-env'
@@ -145,16 +146,26 @@ export function processSheetContent({
 interface ProcessSheetFileParams {
   filePath: string
   options?: Options
+  /**
+   * Optionally from `include`, `exclude`, a pre-created filter function can be passed in.
+   */
+  filter?: ReturnType<typeof createFilter>
   cwd?: string
 }
 
 export async function processSheetFile({
   filePath,
   options,
+  filter,
   cwd,
 }: ProcessSheetFileParams): Promise<void> {
   cwd = cwd ? resolve(cwd) : resolve()
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
+
+  filter ??= createFilter(options?.include, options?.exclude)
+
+  if (!filter(filePath))
+    return logger.debug(`[sheetI18n] Skipping: ${relative(cwd, filePath)}`)
 
   const parsedPath = parse(filePath)
   logger.info(`[sheetI18n] Processing: ${relative(cwd, filePath)}`)
@@ -282,24 +293,15 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
   }
 
   const filteredFiles = files.filter((filePath) => {
-    // filePath is absolute here. For regex matching, it's often better to use relative paths
-    // or ensure regexes are written to handle absolute paths if necessary.
-    // The old context used relativePath for filter. Let's stick to that for regex.
+    // Use relative path for regexp matching
     const relativeFilePath = relative(cwd, filePath)
 
-    // Apply include Regexps:
-    // If includeGlobs were used, files are already pre-filtered by them.
-    // They must ALSO match at least one includeRegexp if includeRegexps are provided.
-    // If includeGlobs were NOT used (i.e., globsToSearch was '**/*'),
-    // then they MUST match at least one includeRegexp if includeRegexps are provided.
-    // If includeRegexps is empty, this condition is skipped.
     if (includeRegexps.length > 0) {
       if (!includeRegexps.some(re => re.test(relativeFilePath))) {
         return false
       }
     }
 
-    // Apply exclude Regexps: Must not match any
     if (excludeRegexps.length > 0) {
       if (excludeRegexps.some(re => re.test(relativeFilePath))) {
         return false
