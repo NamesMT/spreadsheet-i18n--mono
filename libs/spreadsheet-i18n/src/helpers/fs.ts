@@ -2,10 +2,10 @@ import type { WriteFileOptions } from 'node:fs'
 import { Buffer } from 'node:buffer'
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { readFile as xlsxReadFile, utils as xlsxUtils } from '@e965/xlsx'
+import { consola } from 'consola'
 import { defu } from 'defu'
 import Papa from 'papaparse'
 import { dirname } from 'pathe'
-import { logger } from './logger'
 
 /**
  * Reads a CSV/DSV file and returns its content as a string.
@@ -15,7 +15,7 @@ export async function readCsvFile(filePath: string): Promise<string> {
     return await readFile(filePath, 'utf-8')
   }
   catch (error: any) {
-    logger.error(`[sheetI18n] Error reading CSV file ${filePath}: ${error.message}`)
+    consola.error(`[sheetI18n] Error reading CSV file ${filePath}: ${error.message}`)
     throw error
   }
 }
@@ -35,7 +35,7 @@ export function readXlsxFile(filePath: string): string {
     return xlsxUtils.sheet_to_csv(newSheet, { FS: Papa.RECORD_SEP, RS: '\r\n' })
   }
   catch (error: any) {
-    logger.error(`[sheetI18n] Error reading XLSX file ${filePath}: ${error.message}`)
+    consola.error(`[sheetI18n] Error reading XLSX file ${filePath}: ${error.message}`)
     throw error
   }
 }
@@ -83,7 +83,7 @@ export async function outputFile(
     await writeFile(filepath, finalData, options)
   }
   catch (error: any) {
-    logger.error(`[sheetI18n] Error writing file ${filepath}: ${error.message}`)
+    consola.error(`[sheetI18n] Error writing file ${filepath}: ${error.message}`)
     throw error
   }
 }

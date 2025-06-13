@@ -3,9 +3,9 @@ import type { ParseError, ParseMeta } from 'papaparse'
 import type { ResolvedOptions } from '../core'
 import type { FilterPattern, Options, ProcessedSheetData, SpecialFileProcessedOutput } from '../types'
 import { objectGet, objectSet } from '@namesmt/utils'
+import { consola } from 'consola'
 import Papa from 'papaparse'
 import { dirname, parse, relative, resolve } from 'pathe'
-import { logger } from './logger'
 
 /**
  * Replaces spaces followed by "high" punctuation with a non-breaking space, for languages like `French`
@@ -65,16 +65,16 @@ export function transformToI18n({
     if (keyStyle === 'nested') {
       try {
         if (typeof key !== 'string') {
-          logger.warn(`[sheetI18n] Nested key is not a string, attempting to convert: ${key}`)
+          consola.warn(`[sheetI18n] Nested key is not a string, attempting to convert: ${key}`)
         }
         objectSet(i18nObject, String(key), value)
       }
       catch (error: any) {
         if (error instanceof TypeError && error.message.match(/^Cannot create property '.+' on string/)) {
-          logger.error(`[sheetI18n] Conflict with nested key: '${key}'. A parent key might be a string. Consider using flat keyStyle or revising keys.`)
+          consola.error(`[sheetI18n] Conflict with nested key: '${key}'. A parent key might be a string. Consider using flat keyStyle or revising keys.`)
         }
         else {
-          logger.error(`[sheetI18n] Error setting nested key '${key}': ${error.message}`)
+          consola.error(`[sheetI18n] Error setting nested key '${key}': ${error.message}`)
         }
       }
     }
@@ -127,7 +127,7 @@ export function parseCsvData({
   })
 
   if (result.errors && result.errors.length > 0)
-    logger.error(`[sheetI18n] CSV parsing errors in ${logName}: ${result.errors.map(e => e.message).join(', ')}`)
+    consola.error(`[sheetI18n] CSV parsing errors in ${logName}: ${result.errors.map(e => e.message).join(', ')}`)
 
   return { data: result.data || [], meta: result.meta, errors: result.errors || [] }
 }
@@ -151,7 +151,7 @@ export function filterRowsWithEmptyKeys({
     return false
   })
   if (skippedCount > 0) {
-    logger.info(`[sheetI18n] ${logName}: ${skippedCount} rows with empty key skipped.`)
+    consola.info(`[sheetI18n] ${logName}: ${skippedCount} rows with empty key skipped.`)
   }
   return { filteredRows, skippedCount }
 }
@@ -307,7 +307,7 @@ export function processJiiKeys({
     }
     catch (e: any) {
       if (e?.message === 'Invalid format')
-        logger.warn(`[sheetI18n] ${filePath}: $JII key found but invalid format: ${keyCell}`)
+        consola.warn(`[sheetI18n] ${filePath}: $JII key found but invalid format: ${keyCell}`)
     }
 
     // If not $JII key or invalid
@@ -317,7 +317,7 @@ export function processJiiKeys({
     }
 
     if (!locales.length) {
-      logger.warn(`[sheetI18n] ${filePath}: $JII key found but no locales detected: ${keyCell}`)
+      consola.warn(`[sheetI18n] ${filePath}: $JII key found but no locales detected: ${keyCell}`)
       return false
     }
 
@@ -365,7 +365,7 @@ export function processJiiKeys({
   })
 
   if (outputs.length > 0)
-    logger.info(`[sheetI18n] ${filePath}: Special $JII keys processed.`)
+    consola.info(`[sheetI18n] ${filePath}: Special $JII keys processed.`)
 
   return { remainingRows, outputs }
 }
@@ -409,7 +409,7 @@ export function processFileKeys({
     }
     catch (e: any) {
       if (e?.message === 'Invalid format')
-        logger.warn(`[sheetI18n] ${filePath}: $FILE key found but invalid format: ${keyCell}`)
+        consola.warn(`[sheetI18n] ${filePath}: $FILE key found but invalid format: ${keyCell}`)
     }
 
     if (!command) {
@@ -417,7 +417,7 @@ export function processFileKeys({
     }
 
     if (!locales.length) {
-      logger.warn(`[sheetI18n] ${filePath}: $FILE key found but no locales detected: ${keyCell}`)
+      consola.warn(`[sheetI18n] ${filePath}: $FILE key found but no locales detected: ${keyCell}`)
       return false
     }
 
@@ -446,7 +446,7 @@ export function processFileKeys({
   })
 
   if (outputs.length > 0)
-    logger.info(`[sheetI18n] ${filePath}: Special $FILE keys processed.`)
+    consola.info(`[sheetI18n] ${filePath}: Special $FILE keys processed.`)
   return { remainingRows, outputs }
 }
 
@@ -493,7 +493,7 @@ export function generateStandardI18nOutputs({
   }
   else {
     if (!detectedLocales.length) {
-      logger.error(`[sheetI18n] No locales detected for ${filePath} and no valueColumn specified.`)
+      consola.error(`[sheetI18n] No locales detected for ${filePath} and no valueColumn specified.`)
       return [] // Return empty if no locales and no valueColumn
     }
     detectedLocales.forEach((locale: string) => {

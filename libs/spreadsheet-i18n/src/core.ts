@@ -1,5 +1,6 @@
 import type { Options, ProcessedSheetData, SpecialFileProcessedOutput } from './types'
 import { createFilter } from '@rollup/pluginutils'
+import { consola } from 'consola'
 import { defu } from 'defu'
 import { parse, relative, resolve } from 'pathe'
 import { process } from 'std-env'
@@ -10,7 +11,6 @@ import {
   readCsvFile,
   readXlsxFile,
 } from './helpers/fs'
-import { logger } from './helpers/logger'
 import {
   filterCommentRows,
   filterRowsWithEmptyKeys,
@@ -165,10 +165,10 @@ export async function processSheetFile({
   filter ??= createFilter(options?.include, options?.exclude)
 
   if (!filter(filePath))
-    return logger.debug(`[sheetI18n] Skipping: ${relative(cwd, filePath)}`)
+    return consola.debug(`[sheetI18n] Skipping: ${relative(cwd, filePath)}`)
 
   const parsedPath = parse(filePath)
-  logger.info(`[sheetI18n] Processing: ${relative(cwd, filePath)}`)
+  consola.info(`[sheetI18n] Processing: ${relative(cwd, filePath)}`)
 
   const allowedExtensions = ['.csv', '.dsv', '.tsv']
   const spreadsheetExtensions = ['.xls', '.xlsx', '.xlsm', '.xlsb', '.ods', '.fods']
@@ -177,7 +177,7 @@ export async function processSheetFile({
   }
 
   if (!allowedExtensions.includes(parsedPath.ext.toLowerCase())) {
-    logger.error(
+    consola.error(
       `[sheetI18n] Unexpected extension: ${filePath}${spreadsheetExtensions.includes(parsedPath.ext.toLowerCase()) && !resolvedOptions.xlsx
         ? '. XLSX processing is not enabled. Set `xlsx: true` in options.'
         : ''
@@ -193,18 +193,18 @@ export async function processSheetFile({
     }
     else if (spreadsheetExtensions.includes(parsedPath.ext.toLowerCase())) {
       if (!resolvedOptions.xlsx) {
-        logger.error(`[sheetI18n] XLSX file (${filePath}) found but 'xlsx' option is false.`)
+        consola.error(`[sheetI18n] XLSX file (${filePath}) found but 'xlsx' option is false.`)
         return
       }
       fileContentString = readXlsxFile(filePath)
     }
     else {
-      logger.error(`[sheetI18n] File type not supported for ${filePath}`)
+      consola.error(`[sheetI18n] File type not supported for ${filePath}`)
       return
     }
   }
   catch (error: any) {
-    logger.error(`[sheetI18n] Error reading file ${filePath}: ${error.message}`)
+    consola.error(`[sheetI18n] Error reading file ${filePath}: ${error.message}`)
     return
   }
 
@@ -217,7 +217,7 @@ export async function processSheetFile({
 
   for (const { outputPath, data } of i18nOutputs) {
     if (!data || Object.keys(data).length === 0) {
-      logger.warn(`[sheetI18n] Empty content for ${outputPath}. Skipping file write.`)
+      consola.warn(`[sheetI18n] Empty content for ${outputPath}. Skipping file write.`)
       continue
     }
     try {
@@ -228,10 +228,10 @@ export async function processSheetFile({
       else {
         await outputFile(outputPath, fileData, { encoding: 'utf8' })
       }
-      logger.info(`[sheetI18n] Generated: ${relative(resolvedOptions.outDir ?? cwd, outputPath)}`)
+      consola.info(`[sheetI18n] Generated: ${relative(resolvedOptions.outDir ?? cwd, outputPath)}`)
     }
     catch (error: any) {
-      logger.error(`[sheetI18n] Error writing JSON output to ${outputPath}: ${error.message}`)
+      consola.error(`[sheetI18n] Error writing JSON output to ${outputPath}: ${error.message}`)
     }
   }
 
@@ -239,10 +239,10 @@ export async function processSheetFile({
     try {
       const fileData: string = type === 'json' ? JSON.stringify(content, null, 2) : content as string
       await outputFile(outputPath, fileData, { encoding: 'utf8' })
-      logger.info(`[sheetI18n] Generated (special): ${relative(resolvedOptions.outDir ?? cwd, outputPath)}`)
+      consola.info(`[sheetI18n] Generated (special): ${relative(resolvedOptions.outDir ?? cwd, outputPath)}`)
     }
     catch (error: any) {
-      logger.error(`[sheetI18n] Error writing special output to ${outputPath}: ${error.message}`)
+      consola.error(`[sheetI18n] Error writing special output to ${outputPath}: ${error.message}`)
     }
   }
 }
@@ -260,15 +260,15 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
   cwd = cwd ? resolve(cwd) : resolve()
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
 
-  logger.info(`[sheetI18n] Scanning directory: ${cwd}`)
-  logger.debug(`[sheetI18n] Resolved options for scan: ${JSON.stringify(resolvedOptions, null, 2)}`)
+  consola.info(`[sheetI18n] Scanning directory: ${cwd}`)
+  consola.debug(`[sheetI18n] Resolved options for scan: ${JSON.stringify(resolvedOptions, null, 2)}`)
 
   const { globs: includeGlobs, regexps: includeRegexps } = normalizePatterns(resolvedOptions.include)
   const { globs: excludeGlobs, regexps: excludeRegexps } = normalizePatterns(resolvedOptions.exclude)
 
   if (includeGlobs.length === 0 && includeRegexps.length === 0) {
     // This case implies that the default include regex was overridden with an empty pattern.
-    logger.warn('[sheetI18n] No include patterns specified (neither globs nor RegExps). Nothing to process.')
+    consola.warn('[sheetI18n] No include patterns specified (neither globs nor RegExps). Nothing to process.')
     return
   }
 
@@ -285,10 +285,10 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
       dot: true,
       onlyFiles: true,
     })
-    logger.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${cwd}): ${JSON.stringify(files)}`)
+    consola.debug(`[sheetI18n] Files after globbing (${globsToSearch.join(', ')} in ${cwd}): ${JSON.stringify(files)}`)
   }
   catch (error: any) {
-    logger.error(`[sheetI18n] Error during globbing: ${error.message}`)
+    consola.error(`[sheetI18n] Error during globbing: ${error.message}`)
     return // Stop if globbing fails
   }
 
@@ -311,18 +311,18 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
   })
 
   if (filteredFiles.length === 0) {
-    logger.info('[sheetI18n] No files matched the specified patterns after all filters.')
+    consola.info('[sheetI18n] No files matched the specified patterns after all filters.')
     return
   }
 
-  logger.info(`[sheetI18n] Found ${filteredFiles.length} files to process.`)
+  consola.info(`[sheetI18n] Found ${filteredFiles.length} files to process.`)
 
   for (const filePath of filteredFiles) {
     // processSheetFile expects absolute paths for filePath, and cwd for relative logging
     await processSheetFile({ filePath, options: resolvedOptions, cwd })
   }
 
-  logger.info('[sheetI18n] Scan and convert finished.')
+  consola.info('[sheetI18n] Scan and convert finished.')
 }
 
 // IIFE for async setup of xlsx fs
@@ -337,6 +337,6 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
     }
   }
   catch (error) {
-    logger.debug('[sheetI18n] Could not set fs for xlsx. This is expected if not in Node.js or xlsx is not used.', error instanceof Error ? error.message : String(error))
+    consola.debug('[sheetI18n] Could not set fs for xlsx. This is expected if not in Node.js or xlsx is not used.', error instanceof Error ? error.message : String(error))
   }
 })()
