@@ -24,9 +24,9 @@
     "@local/common": "workspace:*",
     "@local/locales": "workspace:*",
     "@local/tsconfig": "workspace:*",
-    "@namesmt/utils": "^0.5.13",
+    "@namesmt/utils": "^0.5.14",
     "@scalar/hono-api-reference": "^0.9.3",
-    "@vitest/coverage-v8": "^3.2.2",
+    "@vitest/coverage-v8": "^3.2.3",
     "arktype": "^2.1.20",
     "consola": "^3.4.2",
     "hono": "^4.7.11",
@@ -36,6 +36,6 @@
     "petite-vue-i18n": "^11.1.5",
     "std-env": "^3.9.0",
     "unbuild": "^3.5.0",
-    "vitest": "^3.2.2"
+    "vitest": "^3.2.3"
   }
 }

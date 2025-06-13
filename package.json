@@ -2,7 +2,7 @@
   "name": "spreadsheet-i18n--mono",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.12.1",
   "engines": {
     "node": ">=20.13.1"
   },
@@ -17,19 +17,19 @@
   },
   "dependencies": {
     "pathe": "^2.0.3",
-    "sst": "^3.17.3",
+    "sst": "^3.17.5",
     "std-env": "^3.9.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.14.1",
     "@dotenvx/dotenvx": "1.11.4",
     "@types/aws-lambda": "^8.10.149",
-    "@unocss/eslint-plugin": "^66.1.4",
+    "@unocss/eslint-plugin": "^66.2.0",
     "eslint": "^9.28.0",
     "frontend": "workspace:*",
     "lint-staged": "^16.1.0",
     "simple-git-hooks": "^2.13.0",
-    "tsx": "^4.19.4",
+    "tsx": "^4.20.2",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3"
   },

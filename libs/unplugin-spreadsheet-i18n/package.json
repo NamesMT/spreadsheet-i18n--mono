@@ -103,21 +103,21 @@
     }
   },
   "dependencies": {
-    "spreadsheet-i18n": "^0.3.3",
+    "spreadsheet-i18n": "^0.3.5",
     "unplugin": "^2.3.5"
   },
   "devDependencies": {
     "@nuxt/kit": "^3.17.5",
     "@nuxt/schema": "^3.17.5",
     "@rollup/pluginutils": "^5.1.4",
-    "@types/node": "^22.15.30",
+    "@types/node": "^22.15.31",
     "eslint": "^9.28.0",
-    "rollup": "^4.42.0",
+    "rollup": "^4.43.0",
     "tsdown": "^0.12.7",
-    "tsx": "^4.19.4",
+    "tsx": "^4.20.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.2.2",
+    "vitest": "^3.2.3",
     "webpack": "^5.99.9"
   }
 }
