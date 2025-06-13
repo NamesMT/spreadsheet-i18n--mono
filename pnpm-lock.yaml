@@ -279,6 +279,9 @@ importers:
       '@namesmt/utils':
         specifier: ^0.5.13
         version: 0.5.13
+      '@rollup/pluginutils':
+        specifier: ^5.1.4
+        version: 5.1.4(rollup@4.42.0)
       '@types/papaparse':
         specifier: ^5.3.16
         version: 5.3.16
@@ -301,8 +304,8 @@ importers:
         specifier: '*'
         version: 0.25.5
       spreadsheet-i18n:
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.3
+        version: 0.3.3
       unplugin:
         specifier: ^2.3.5
         version: 2.3.5
@@ -313,6 +316,9 @@ importers:
       '@nuxt/schema':
         specifier: ^3.17.5
         version: 3.17.5
+      '@rollup/pluginutils':
+        specifier: ^5.1.4
+        version: 5.1.4(rollup@4.42.0)
       '@types/node':
         specifier: ^22.15.30
         version: 22.15.30
@@ -7348,8 +7354,8 @@ packages:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
 
-  spreadsheet-i18n@0.3.0:
-    resolution: {integrity: sha512-J1+SheNMALSPu2YwqJvelZosE12q6RjFr/Ut4lSerP7tp7wOGcdbBUlyibJ+f/xuRY1F73LMx2QxIu9OCSt8WA==}
+  spreadsheet-i18n@0.3.3:
+    resolution: {integrity: sha512-W4N/AmG1HpHRAepFSIhaFHrc7idT8fZrMAZSdpBDK7PBIplJ70/2SHYptAXQodqbRaUMgilaLwd6Qyt/GYRL2g==}
     engines: {node: '>=20'}
 
   sprintf-js@1.0.3:
@@ -16943,7 +16949,7 @@ snapshots:
 
   speakingurl@14.0.1: {}
 
-  spreadsheet-i18n@0.3.0:
+  spreadsheet-i18n@0.3.3:
     dependencies:
       consola: 3.4.2
       papaparse: 5.5.3
