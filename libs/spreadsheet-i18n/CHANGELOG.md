@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.6
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.5...spreadsheet-i18n-v0.3.6)
+
+### 🩹 Fixes
+
+- Normalize to `\r\n` on read, add `complexXlsx` test ([178f87f](https://github.com/namesmt/spreadsheet-i18n--mono/commit/178f87f))
+
+### 🏡 Chore
+
+- Update deps ([eac58fa](https://github.com/namesmt/spreadsheet-i18n--mono/commit/eac58fa))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.5
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.4...spreadsheet-i18n-v0.3.5)
