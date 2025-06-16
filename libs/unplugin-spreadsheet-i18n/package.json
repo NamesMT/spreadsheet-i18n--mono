@@ -103,7 +103,7 @@
     }
   },
   "dependencies": {
-    "spreadsheet-i18n": "^0.3.5",
+    "spreadsheet-i18n": "^0.3.6",
     "unplugin": "^2.3.5"
   },
   "devDependencies": {

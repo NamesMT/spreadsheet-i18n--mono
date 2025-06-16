@@ -304,8 +304,8 @@ importers:
         specifier: '*'
         version: 0.25.5
       spreadsheet-i18n:
-        specifier: ^0.3.5
-        version: 0.3.5
+        specifier: ^0.3.6
+        version: 0.3.6
       unplugin:
         specifier: ^2.3.5
         version: 2.3.5
@@ -7478,8 +7478,8 @@ packages:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
 
-  spreadsheet-i18n@0.3.5:
-    resolution: {integrity: sha512-512T3oSmgUcKlg5xVwItCS4uI3YQBZk6xnNPGICpfAB+fG/kBiYzfgHcpYaN4JbD07NfmIC5AmiWz/8CvGr/mA==}
+  spreadsheet-i18n@0.3.6:
+    resolution: {integrity: sha512-44bwcGE+TzwlcXPotKAp9Hak4RaappJPmtREOK/qF0bsWFId6Zsyb2cJxlLc3oLXW3TCE3yd2NFMImowZoCDSQ==}
     engines: {node: '>=20'}
 
   sprintf-js@1.0.3:
@@ -17239,7 +17239,7 @@ snapshots:
 
   speakingurl@14.0.1: {}
 
-  spreadsheet-i18n@0.3.5:
+  spreadsheet-i18n@0.3.6:
     dependencies:
       consola: 3.4.2
       papaparse: 5.5.3
