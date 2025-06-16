@@ -98,7 +98,7 @@ export function filterCommentRows({ csvString, commentsConfig }: FilterCommentRo
   // At this point, commentsConfig is a non-empty string or a non-empty array of strings.
   const commentPatterns = Array.isArray(commentsConfig) ? commentsConfig : [commentsConfig]
   return csvString
-    .split(/\r?\n/)
+    .split(/\r\n/)
     .filter(
       line => !commentPatterns.some((comment: string) => {
         const escapedComment = comment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')

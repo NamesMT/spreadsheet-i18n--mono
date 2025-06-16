@@ -12,7 +12,7 @@ import { dirname } from 'pathe'
  */
 export async function readCsvFile(filePath: string): Promise<string> {
   try {
-    return await readFile(filePath, 'utf-8')
+    return await readFile(filePath, 'utf-8').then(r => r.replaceAll(/[^\r]\n/g, '\r\n'))
   }
   catch (error: any) {
     consola.error(`[sheetI18n] Error reading CSV file ${filePath}: ${error.message}`)

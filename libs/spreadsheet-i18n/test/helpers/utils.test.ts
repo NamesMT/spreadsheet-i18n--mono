@@ -116,24 +116,23 @@ describe('helper Utilities - utils.ts', () => {
 
   describe('filterCommentRows', () => {
     it('should filter single line comment', () => {
-      const csv = '//comment\nkey,value\n#another,comment'
-      // filterCommentRows normalizes to \r\n
+      const csv = '//comment\r\nkey,value\r\n#another,comment'
       expect(filterCommentRows({ csvString: csv, commentsConfig: '//' })).toBe('key,value\r\n#another,comment')
     })
     it('should return an empty string if all lines are comments', () => {
-      const csv = '//comment1\n#comment2'
+      const csv = '//comment1\r\n#comment2'
       expect(filterCommentRows({ csvString: csv, commentsConfig: ['//', '#'] })).toBe('')
     })
     it('should filter multiple comment patterns', () => {
-      const csv = '//comment1\n#comment2\nkey,value'
+      const csv = '//comment1\r\n#comment2\r\nkey,value'
       expect(filterCommentRows({ csvString: csv, commentsConfig: ['//', '#'] })).toBe('key,value')
     })
     it('should not filter if commentsConfig is false', () => {
-      const csv = '//comment\nkey,value'
+      const csv = '//comment\r\nkey,value'
       expect(filterCommentRows({ csvString: csv, commentsConfig: false })).toBe(csv)
     })
     it('should handle comments with quotes', () => {
-      const csv = '"//comment"\nkey,value'
+      const csv = '"//comment"\r\nkey,value'
       expect(filterCommentRows({ csvString: csv, commentsConfig: '//' })).toBe('key,value')
     })
   })
