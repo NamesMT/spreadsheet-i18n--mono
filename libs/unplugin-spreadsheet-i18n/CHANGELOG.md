@@ -1,6 +1,18 @@
 # Changelog
 
 
+## unplugin-spreadsheet-i18n-v0.3.4
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.3.3...unplugin-spreadsheet-i18n-v0.3.4)
+
+### 🏡 Chore
+
+- Bump lib ([143d31c](https://github.com/namesmt/spreadsheet-i18n--mono/commit/143d31c))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## unplugin-spreadsheet-i18n-v0.3.3
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.3.2...unplugin-spreadsheet-i18n-v0.3.3)
