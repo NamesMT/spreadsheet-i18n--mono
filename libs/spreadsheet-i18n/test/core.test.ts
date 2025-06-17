@@ -101,7 +101,7 @@ describe('core Functions', () => {
       const options: Options = {}
       await coreFunctions.processSheetFile({ filePath: testFilePath, options, cwd: testRootDir })
 
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(testFilePath)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(testFilePath, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledTimes(1)
       // Output path will be test-data/en.json because outDir is undefined
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
@@ -176,7 +176,7 @@ describe('core Functions', () => {
       expect(mockedLogger.info).toHaveBeenCalledWith(`[sheetI18n] Found ${files.length} files to process.`)
 
       // Check processing for file1Path
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
         resolve(defaultScanDir, 'src/en.json'), // Default outDir, preserveStructure: false
         JSON.stringify({ key1: 'Value1' }, null, 2),
@@ -184,7 +184,7 @@ describe('core Functions', () => {
       )
 
       // Check processing for file2Path
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file2Path)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file2Path, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
         resolve(defaultScanDir, 'modules/fr.json'), // Default outDir, preserveStructure: false
         JSON.stringify({ key2: 'Valeur2' }, null, 2),
@@ -213,7 +213,7 @@ describe('core Functions', () => {
 
       expect(mockedTinyGlobby).toHaveBeenCalledWith(['**/projectA/i18n.csv'], expect.objectContaining({ cwd: customScanDir }))
       expect(mockedLogger.info).toHaveBeenCalledWith(`[sheetI18n] Scanning directory: ${customScanDir}`)
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
         resolve(defaultScanDir, 'dist/locales', 'data/projectA', 'en.json'),
         JSON.stringify({ 'app.title': 'My App' }, null, 2),
@@ -239,13 +239,13 @@ describe('core Functions', () => {
       await coreFunctions.scanConvert(options)
 
       expect(mockedTinyGlobby).toHaveBeenCalledWith(['**/*'], expect.objectContaining({ cwd: defaultScanDir }))
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1, undefined)
       expect(mockedFsUtils.outputFile).toHaveBeenCalledWith( // Not outputWriteMerge
         resolve(defaultScanDir, 'src/en.json'),
         JSON.stringify({ 'key.one': 'One' }, null, 2),
         { encoding: 'utf8' },
       )
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file3)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file3, undefined)
       expect(mockedFsUtils.outputFile).toHaveBeenCalledWith( // Not outputWriteMerge
         resolve(defaultScanDir, 'locales/en/en.json'), // common.csv -> en.json
         JSON.stringify({ 'common.greeting': 'Hello' }, null, 2),
@@ -285,7 +285,7 @@ describe('core Functions', () => {
       )
       // Check that only fileToProcess was actually read and written
       expect(mockedFsUtils.readCsvFile).toHaveBeenCalledTimes(1)
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(fileToProcess)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(fileToProcess, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledTimes(1)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
         resolve(defaultScanDir, 'src/en.json'),
@@ -352,13 +352,13 @@ describe('core Functions', () => {
       // Default include is a regex, so glob searches all, then filters
       expect(mockedTinyGlobby).toHaveBeenCalledWith(['**/*'], expect.objectContaining({ cwd: defaultScanDir }))
 
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file1Path, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
         resolve(defaultScanDir, 'src/en.json'),
         JSON.stringify({ 'default.key1': 'Default Value 1' }, null, 2),
         expect.anything(),
       )
-      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file2Path)
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(file2Path, undefined)
       expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledWith(
         resolve(defaultScanDir, 'src/fr.json'),
         JSON.stringify({ 'default.key2': 'Default Value 2' }, null, 2),

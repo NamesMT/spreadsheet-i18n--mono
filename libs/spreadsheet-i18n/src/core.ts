@@ -187,7 +187,7 @@ export async function processSheetFile({
   let fileContentString: string
   try {
     if (['.csv', '.dsv', '.tsv'].includes(parsedPath.ext.toLowerCase())) {
-      fileContentString = await readCsvFile(filePath)
+      fileContentString = await readCsvFile(filePath, resolvedOptions.delimiter)
     }
     else if (spreadsheetExtensions.includes(parsedPath.ext.toLowerCase())) {
       if (!resolvedOptions.xlsx) {

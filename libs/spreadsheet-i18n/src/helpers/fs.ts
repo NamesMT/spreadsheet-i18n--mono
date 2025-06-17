@@ -1,3 +1,4 @@
+import type { ResolvedOptions } from '#src/core.js'
 import type { WriteFileOptions } from 'node:fs'
 import { Buffer } from 'node:buffer'
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
@@ -10,9 +11,16 @@ import { dirname } from 'pathe'
 /**
  * Reads a CSV/DSV file and returns its content as a string.
  */
-export async function readCsvFile(filePath: string): Promise<string> {
+export async function readCsvFile(filePath: string, delimiter: ResolvedOptions['delimiter']): Promise<string> {
   try {
-    return await readFile(filePath, 'utf-8').then(r => r.replaceAll(/[^\r]\n/g, '\r\n'))
+    delimiter = typeof delimiter === 'function' ? delimiter(filePath) : delimiter
+    const file = await readFile(filePath, 'utf-8')
+    const parsed = Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      delimiter,
+    })
+    return Papa.unparse(parsed.data, { header: true, delimiter })
   }
   catch (error: any) {
     consola.error(`[sheetI18n] Error reading CSV file ${filePath}: ${error.message}`)
