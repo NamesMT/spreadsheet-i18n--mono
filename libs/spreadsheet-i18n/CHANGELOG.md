@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.7
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.6...spreadsheet-i18n-v0.3.7)
+
+### 🩹 Fixes
+
+- Csv file with multi-line values ([52c9563](https://github.com/namesmt/spreadsheet-i18n--mono/commit/52c9563))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.6
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.5...spreadsheet-i18n-v0.3.6)
