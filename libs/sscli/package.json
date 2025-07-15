@@ -1,7 +1,7 @@
 {
   "name": "sscli",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Spreadsheet command-line internalization tool, convert CSV/XLSX/ODS to JSON",
   "author": "NamesMT <dangquoctrung123@gmail.com>",
   "license": "Apache-2.0",
