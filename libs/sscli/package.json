@@ -1,0 +1,61 @@
+{
+  "name": "sscli",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Spreadsheet command-line internalization tool, convert CSV/XLSX/ODS to JSON",
+  "author": "NamesMT <dangquoctrung123@gmail.com>",
+  "license": "Apache-2.0",
+  "funding": "https://github.com/sponsors/namesmt",
+  "homepage": "https://github.com/namesmt/spreadsheet-i18n--mono#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namesmt/spreadsheet-i18n--mono.git"
+  },
+  "bugs": "https://github.com/namesmt/spreadsheet-i18n--mono/issues",
+  "keywords": [
+    "transform",
+    "spreadsheet",
+    "generation",
+    "excel",
+    "xlsx",
+    "ods",
+    "fods",
+    "csv",
+    "dsv",
+    "i18n",
+    "internalization",
+    "localization",
+    "localize"
+  ],
+  "sideEffects": false,
+  "bin": {
+    "sscli": "./dist/cli-entry.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "cli": "tsx src/cli-entry.ts",
+    "lint": "eslint .",
+    "test": "vitest",
+    "test:types": "tsc --noEmit --skipLibCheck",
+    "quickcheck": "pnpm run lint && pnpm run test:types",
+    "check": "pnpm lint && pnpm test:types && vitest run --coverage",
+    "build": "tsdown",
+    "bumpp": "pnpm dlx bumpp --no-commit --no-tag --no-push",
+    "doPublish": "pnpm publish",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "citty": "^0.1.6",
+    "pathe": "^2.0.3",
+    "spreadsheet-i18n": "^0.3.7"
+  },
+  "devDependencies": {
+    "@local/tsconfig": "workspace:*",
+    "@namesmt/utils": "^0.5.13",
+    "@vitest/coverage-v8": "^3.1.4",
+    "tsdown": "^0.12.9",
+    "vitest": "^3.1.4"
+  }
+}

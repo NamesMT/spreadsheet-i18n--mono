@@ -17,6 +17,7 @@
     * [Apps and Libraries](#apps-and-libraries)
       * [`spreadsheet-i18n`: The core library](#spreadsheet-i18n-the-core-library)
       * [`unplugin-spreadsheet-i18n`: Unplugin support](#unplugin-spreadsheet-i18n-unplugin-support)
+      * [`sscli`: CLI wrapper](#sscli-cli-wrapper)
     * [Local packages](#local-packages)
     * [Utilities](#utilities)
     * [Build](#build)
@@ -49,17 +50,21 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 
 ### Apps and Libraries
 
-#### [`spreadsheet-i18n`](./libs/spreadsheet-i18n/README.md): The core library
+#### [`spreadsheet-i18n`](./libs/spreadsheet-i18n): The core library
 
 * Containing the main magics that enables i18n management directly within spreadsheets.
 
-#### [`unplugin-spreadsheet-i18n`](./libs/unplugin-spreadsheet-i18n/README.md): [Unplugin](https://unplugin.unjs.io/) support
+#### [`unplugin-spreadsheet-i18n`](./libs/unplugin-spreadsheet-i18n): [Unplugin](https://unplugin.unjs.io/) support
 
 * Unplugin wrapper to integrate with any project easily!
 
+#### [`sscli`](./libs/sscli): CLI wrapper
+
+* CLI wrapper so that you can easily convert CSV/XLSX/ODS to JSON from your terminal.
+
 ### Local packages
 
-+ [`@local/locales`](./locals/locales/README.md): a shared central locales/i18n data library powered by [**spreadsheet-i18n**](https://github.com/NamesMT/spreadsheet-i18n--mono).
++ [`@local/locales`](./locals/locales): a shared central locales/i18n data library powered by [**spreadsheet-i18n**](https://github.com/NamesMT/spreadsheet-i18n--mono).
   + 🌐✨🤖 **AUTOMATIC** localization with AI, powered by [**lingo.dev**](https://lingo.dev/), just `pnpm run i18n`.
   + 🔄️ Hot-reload and automatic-reload supported, changes are reflected in apps (`frontend`, `backend`) instantly.
 + `tsconfig`: `tsconfig.json`s used throughout the monorepo.

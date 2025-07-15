@@ -92,6 +92,34 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.16.4)(jiti@2.4.2)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0)
 
+  libs/sscli:
+    dependencies:
+      citty:
+        specifier: ^0.1.6
+        version: 0.1.6
+      pathe:
+        specifier: ^2.0.3
+        version: 2.0.3
+      spreadsheet-i18n:
+        specifier: ^0.3.7
+        version: 0.3.7
+    devDependencies:
+      '@local/tsconfig':
+        specifier: workspace:*
+        version: link:../../locals/tsconfig
+      '@namesmt/utils':
+        specifier: ^0.5.13
+        version: 0.5.16
+      '@vitest/coverage-v8':
+        specifier: ^3.1.4
+        version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.16.4)(jiti@2.4.2)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))
+      tsdown:
+        specifier: ^0.12.9
+        version: 0.12.9(typescript@5.8.3)
+      vitest:
+        specifier: ^3.1.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.16.4)(jiti@2.4.2)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0)
+
   libs/unplugin-spreadsheet-i18n:
     dependencies:
       '@farmfe/core':
