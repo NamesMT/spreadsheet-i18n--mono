@@ -23,7 +23,6 @@
     * [Develop](#develop)
     * [Notes](#notes)
       * [`import` ordering](#import-ordering)
-      * [Dev with SSL](#dev-with-ssl)
     * [Remote Caching](#remote-caching)
   * [Useful Links](#useful-links)
 
@@ -46,7 +45,7 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 
 ⏩ This template is powered by [Turborepo](https://turbo.build/repo).
 
-👌 The repo is always [**TypeScript**](https://www.typescriptlang.org/)-native where possible.
+💯 JS is always [**TypeScript**](https://www.typescriptlang.org/) where possible.
 
 ### Apps and Libraries
 
@@ -58,29 +57,16 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 
 * Unplugin wrapper to integrate with any project easily!
 
-<!--
-#### [`frontend`](./apps/frontend/README.md): a [Nuxt](https://nuxt.com/) app, compatible with v4 structure.
-  * By default, the frontend `/api/*` routes is proxied to the `backendUrl`.
-  * The `rpcApi` plugin will call the `/api/*` proxy if they're on the same domain but different ports (e.g: 127.0.0.1)
-    * > this mimics a production environment where the static frontend and the backend lives on the same domain at /api, which is the most efficient configuration for Cloudfront + Lambda Function Url
-    * If the `frontend` and `backend` are on different domains then the backend will be called directly without proxy.
-    * This could be configured in frontend's [`app.config.ts`](./apps/frontend/app/app.config.ts)
-#### [`backend`](./apps/backend/README.md): a [Hono🔥](https://hono.dev/) app.
--->
-
 ### Local packages
 
-+ [`@local/locales`](./locals/locales/README.md): a shared locales/i18n library powered by [spreadsheet-i18n](./libs/spreadsheet-i18n/README.md) itself!.
-+ `@local/common`: a shared library that can contain constants, functions, types.
-<!--
-+ `@local/common-vue`: a shared library that can contain components, constants, functions, types for vue-based apps.
--->
++ [`@local/locales`](./locals/locales/README.md): a shared central locales/i18n data library powered by [**spreadsheet-i18n**](https://github.com/NamesMT/spreadsheet-i18n--mono).
+  + 🌐✨🤖 **AUTOMATIC** localization with AI, powered by [**lingo.dev**](https://lingo.dev/), just `pnpm run i18n`.
+  + 🔄️ Hot-reload and automatic-reload supported, changes are reflected in apps (`frontend`, `backend`) instantly.
 + `tsconfig`: `tsconfig.json`s used throughout the monorepo.
 
 ### Utilities
 
 This Turborepo has some additional tools already setup for you:
-+ 👌 TypeScript
 + 🧐 ESLint + stylistic formatting rules ([antfu](https://github.com/antfu/eslint-config))
 + 📚 A few more goodies like:
   + [lint-staged](https://github.com/lint-staged/lint-staged) pre-commit hook
@@ -97,18 +83,13 @@ To build all apps and packages, run the following command:
 To develop all apps and packages, run the following command:  
 `pnpm run dev`
 
-To define local development environment variables of each app, either use `git update-index --skip-worktree .env.local` and use it directly, or create a copy of or rename `.env.local` to `.env.local.ignored`.
-  - AI Agent will help you creating the `.env.local.ignored` files if you use the AI initialization prompt.
+For local development environment variables / secrets, create a copy of `.env.dev` to `.env.dev.local`.
 
 ### Notes
 
 #### `import` ordering
 
 Imports should not be separated by empty lines, and should be sorted automatically by eslint.
-
-#### Dev with SSL
-
-The project comes with a `localcert` SSL at `locals/common/dev` to enable HTTPS for local development, generated with [mkcert](https://github.com/FiloSottile/mkcert), you can install mkcert, generate your own certificate and replace it, or install the `localcert.crt` to your trusted CA to remove the untrusted SSL warning.
 
 ### Remote Caching
 

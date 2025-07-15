@@ -16,12 +16,13 @@ lib-cov/
 .next/
 .nitro/
 .cache/
-dist/
+dist
+i18n.cache
 
 # misc
-.DS_Store
-.fleet
-.idea
+.DS_Store/
+.fleet/
+.idea/
 temp
 tmp
 logs
@@ -39,17 +40,20 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env.*.ignored
+.env.local
+.env.*.local
 
 # turbo
-.turbo
+.turbo/
 
 # cloud services
-.vercel
-.netlify
+.vercel/
+.netlify/
 
 # sst
-.sst
+.sst/
 
-# pnpm have a bug with tsx that creates the `tsx-0` folder everywhere
-tsx-0
+# https://github.com/pnpm/pnpm/issues/7330
+tsx-0/
+v8-compile-cache*/
+node-compile-cache/

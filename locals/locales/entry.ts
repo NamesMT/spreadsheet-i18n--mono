@@ -1,5 +1,9 @@
-import { createContext } from 'unplugin-sheet-i18n'
+import { scanConvert } from 'spreadsheet-i18n'
 
-createContext({
-  outDir: 'dist',
-}).scanConvert()
+scanConvert(
+  {
+    outDir: 'dist',
+    preserveStructure: true,
+  },
+  'src/sheets',
+)

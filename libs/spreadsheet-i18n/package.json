@@ -61,13 +61,12 @@
     "tinyglobby": "^0.2.14"
   },
   "devDependencies": {
-    "@local/common": "workspace:*",
     "@local/tsconfig": "workspace:*",
-    "@namesmt/utils": "^0.5.14",
-    "@rollup/pluginutils": "^5.1.4",
+    "@namesmt/utils": "^0.5.16",
+    "@rollup/pluginutils": "^5.2.0",
     "@types/papaparse": "^5.3.16",
-    "@vitest/coverage-v8": "^3.2.3",
+    "@vitest/coverage-v8": "^3.2.4",
     "obuild": "^0.2.1",
-    "vitest": "^3.2.3"
+    "vitest": "^3.2.4"
   }
 }
