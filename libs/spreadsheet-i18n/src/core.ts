@@ -49,24 +49,24 @@ export const defaultOptionsObject: Partial<Options> & Pick<ResolvedOptions, 'inc
   | 'jiiProcessorClean'
   | 'fileProcessor'
   | 'fileProcessorClean'> = {
-  include: /(?:[/\\]|^)i18n\.[cdt]sv$/,
-  exclude: undefined,
-  outDir: undefined,
-  keyStyle: 'flat',
-  keyColumn: 'KEY',
-  valueColumn: undefined,
-  localesMatcher: /^\w{2}(?:-\w{2,4})?$/,
-  comments: '//',
-  xlsx: false,
-  mergeOutput: true,
-  preserveStructure: false,
-  replacePunctuationSpace: true,
-  jiiProcessor: false,
-  jiiProcessorClean: true,
-  fileProcessor: false,
-  fileProcessorClean: true,
-  delimiter: undefined,
-}
+    include: /(?:[/\\]|^)i18n\.[cdt]sv$/,
+    exclude: undefined,
+    outDir: undefined,
+    keyStyle: 'flat',
+    keyColumn: 'KEY',
+    valueColumn: undefined,
+    localesMatcher: /^\w{2}(?:-\w{2,4})?$/,
+    comments: '//',
+    xlsx: false,
+    mergeOutput: true,
+    preserveStructure: false,
+    replacePunctuationSpace: true,
+    jiiProcessor: false,
+    jiiProcessorClean: true,
+    fileProcessor: false,
+    fileProcessorClean: true,
+    delimiter: undefined,
+  }
 
 interface ProcessSheetContentParams {
   fileContent: string
@@ -81,9 +81,9 @@ export function processSheetContent({
   options,
   cwd,
 }: ProcessSheetContentParams): {
-    i18nOutputs: ProcessedSheetData[]
-    specialOutputs: SpecialFileProcessedOutput[]
-  } {
+  i18nOutputs: ProcessedSheetData[]
+  specialOutputs: SpecialFileProcessedOutput[]
+} {
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
   const parsedPath = parse(filePath)
 
