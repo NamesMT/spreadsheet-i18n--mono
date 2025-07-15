@@ -1,6 +1,28 @@
 # Changelog
 
 
+## spreadsheet-i18n-v0.3.8
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.7...spreadsheet-i18n-v0.3.8)
+
+### 🩹 Fixes
+
+- `@e965/xlsx` dep missing ([640a63f](https://github.com/namesmt/spreadsheet-i18n--mono/commit/640a63f))
+
+### 🌊 Types
+
+- Correction: `cwd` does not exists in `Options` ([f567e82](https://github.com/namesmt/spreadsheet-i18n--mono/commit/f567e82))
+- Minor ([1e7eef3](https://github.com/namesmt/spreadsheet-i18n--mono/commit/1e7eef3))
+
+### 🏡 Chore
+
+- Repo cleanup, update deps ([54dd833](https://github.com/namesmt/spreadsheet-i18n--mono/commit/54dd833))
+- Apply lint fixes ([577107b](https://github.com/namesmt/spreadsheet-i18n--mono/commit/577107b))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.7
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.6...spreadsheet-i18n-v0.3.7)
