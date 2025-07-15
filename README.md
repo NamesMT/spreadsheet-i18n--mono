@@ -17,7 +17,7 @@
     * [Apps and Libraries](#apps-and-libraries)
       * [`spreadsheet-i18n`: The core library](#spreadsheet-i18n-the-core-library)
       * [`unplugin-spreadsheet-i18n`: Unplugin support](#unplugin-spreadsheet-i18n-unplugin-support)
-      * [`sscli`: CLI wrapper](#sscli-cli-wrapper)
+      * [`ssic`: CLI wrapper](#ssic-cli-wrapper)
     * [Local packages](#local-packages)
     * [Utilities](#utilities)
     * [Build](#build)
@@ -58,7 +58,7 @@ Traditional i18n often involves navigating complex file formats (like JSON or YA
 
 * Unplugin wrapper to integrate with any project easily!
 
-#### [`sscli`](./libs/sscli): CLI wrapper
+#### [`ssic`](./libs/ssic): CLI wrapper
 
 * CLI wrapper so that you can easily convert CSV/XLSX/ODS to JSON from your terminal.
 

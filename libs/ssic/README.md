@@ -6,7 +6,7 @@
 
 </div>
 
-# sscli ![TypeScript heart icon](https://img.shields.io/badge/♡-%23007ACC.svg?logo=typescript&logoColor=white)
+# ssic ![TypeScript heart icon](https://img.shields.io/badge/♡-%23007ACC.svg?logo=typescript&logoColor=white)
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -14,7 +14,7 @@
 [![Bundlejs][bundlejs-src]][bundlejs-href]
 [![TypeDoc][TypeDoc-src]][TypeDoc-href]
 
-* [sscli ](#sscli-)
+* [ssic ](#ssic-)
   * [Overview](#overview)
   * [Features](#features)
   * [Usage](#usage)
@@ -22,7 +22,7 @@
 
 ## Overview
 
-**sscli** is a command-line wrapper for [**`spreadsheet-i18n`**](https://github.com/NamesMT/spreadsheet-i18n--mono/blob/main/libs/spreadsheet-i18n/README.md) which contains the magics that enables i18n workflows with spreadsheets.
+**ssic** is a command-line wrapper for [**`spreadsheet-i18n`**](https://github.com/NamesMT/spreadsheet-i18n--mono/blob/main/libs/spreadsheet-i18n/README.md) which contains the magics that enables i18n workflows with spreadsheets.
 
 ## Features
 
@@ -37,7 +37,7 @@
 ## Usage
 
 ```sh
-npx sscli -i locales/i18nSheet.csv -o dist/locales/
+npx ssic -i locales/i18nSheet.csv -o dist/locales/
 ```
 
 ## License
@@ -46,17 +46,17 @@ npx sscli -i locales/i18nSheet.csv -o dist/locales/
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/sscli?labelColor=18181B&color=F0DB4F
-[npm-version-href]: https://npmjs.com/package/sscli
-[npm-downloads-src]: https://img.shields.io/npm/dm/sscli?labelColor=18181B&color=F0DB4F
-[npm-downloads-href]: https://npmjs.com/package/sscli
-[codecov-src]: https://img.shields.io/codecov/c/gh/namesmt/spreadsheet-i18n--mono/main?labelColor=18181B&color=F0DB4F&flag=sscli
+[npm-version-src]: https://img.shields.io/npm/v/ssic?labelColor=18181B&color=F0DB4F
+[npm-version-href]: https://npmjs.com/package/ssic
+[npm-downloads-src]: https://img.shields.io/npm/dm/ssic?labelColor=18181B&color=F0DB4F
+[npm-downloads-href]: https://npmjs.com/package/ssic
+[codecov-src]: https://img.shields.io/codecov/c/gh/namesmt/spreadsheet-i18n--mono/main?labelColor=18181B&color=F0DB4F&flag=ssic
 [codecov-href]: https://codecov.io/gh/namesmt/spreadsheet-i18n--mono
-[license-src]: https://img.shields.io/github/license/namesmt/sscli.svg?labelColor=18181B&color=F0DB4F
-[license-href]: https://github.com/namesmt/sscli/blob/main/LICENSE
-[bundlejs-src]: https://img.shields.io/bundlejs/size/sscli?labelColor=18181B&color=F0DB4F
-[bundlejs-href]: https://bundlejs.com/?q=sscli
+[license-src]: https://img.shields.io/github/license/namesmt/ssic.svg?labelColor=18181B&color=F0DB4F
+[license-href]: https://github.com/namesmt/ssic/blob/main/LICENSE
+[bundlejs-src]: https://img.shields.io/bundlejs/size/ssic?labelColor=18181B&color=F0DB4F
+[bundlejs-href]: https://bundlejs.com/?q=ssic
 [jsDocs-src]: https://img.shields.io/badge/Check_out-jsDocs.io---?labelColor=18181B&color=F0DB4F
-[jsDocs-href]: https://www.jsdocs.io/package/sscli
+[jsDocs-href]: https://www.jsdocs.io/package/ssic
 [TypeDoc-src]: https://img.shields.io/badge/Check_out-TypeDoc---?labelColor=18181B&color=F0DB4F
-[TypeDoc-href]: https://namesmt.github.io/sscli/
+[TypeDoc-href]: https://namesmt.github.io/ssic/

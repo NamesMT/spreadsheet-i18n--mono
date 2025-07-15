@@ -1,5 +1,5 @@
 {
-  "name": "sscli",
+  "name": "ssic",
   "type": "module",
   "version": "0.1.1",
   "description": "Spreadsheet command-line internalization tool, convert CSV/XLSX/ODS to JSON",
@@ -29,7 +29,7 @@
   ],
   "sideEffects": false,
   "bin": {
-    "sscli": "./dist/cli-entry.js"
+    "ssic": "./dist/cli-entry.js"
   },
   "files": [
     "dist"

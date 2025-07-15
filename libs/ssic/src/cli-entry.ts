@@ -29,7 +29,7 @@ function parsePossibleRegExp(value?: string): undefined | string | RegExp {
 
 const main = defineCommand({
   meta: {
-    name: 'sscli',
+    name: 'ssic',
     description: 'Spreadsheet command-line internalization tool',
   },
   args: {
@@ -40,13 +40,13 @@ const main = defineCommand({
     include: {
       alias: ['i'],
       type: 'string',
-      description: 'Glob pattern, regex, or string to include files, can be provided multiple times: `sscli -i A.csv -i B.csv`',
+      description: 'Glob pattern, regex, or string to include files, can be provided multiple times: `ssic -i A.csv -i B.csv`',
       default: /(?:[/\\]|^)i18n\.[cdt]sv$/.toString(),
     },
     exclude: {
       alias: ['x'],
       type: 'string',
-      description: 'Glob pattern, regex, or string to exclude files, can be provided multiple times: `sscli -x A.csv -x B.csv',
+      description: 'Glob pattern, regex, or string to exclude files, can be provided multiple times: `ssic -x A.csv -x B.csv',
     },
     outDir: {
       alias: ['o'],
