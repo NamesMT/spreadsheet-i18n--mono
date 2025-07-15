@@ -6,7 +6,7 @@ export interface Options {
   /**
    * Glob patterns, regex, or string to include files for processing.
    *
-   * @default /(?:\/|\\|^)i18n\.(?:[cdt]sv)$/
+   * @default /(?:[/\\]|^)i18n\.[cdt]sv$/
    */
   include?: FilterPattern
 
