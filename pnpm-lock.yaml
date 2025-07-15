@@ -5,10 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  deep-equal: npm:@nolyfill/deep-equal@^1
-  is-generator-function: npm:@nolyfill/is-generator-function@^1
-  safe-buffer: npm:@nolyfill/safe-buffer@^1
-  safer-buffer: npm:@nolyfill/safer-buffer@^1
+  deep-equal: npm:@nolyfill/deep-equal@^1.0.44
+  is-generator-function: npm:@nolyfill/is-generator-function@^1.0.44
+  safe-buffer: npm:@nolyfill/safe-buffer@^1.0.44
+  safer-buffer: npm:@nolyfill/safer-buffer@^1.0.44
 
 importers:
 
@@ -101,23 +101,23 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3
       spreadsheet-i18n:
-        specifier: ^0.3.7
-        version: 0.3.7
+        specifier: ^0.3.8
+        version: 0.3.8
     devDependencies:
       '@local/tsconfig':
         specifier: workspace:*
         version: link:../../locals/tsconfig
       '@namesmt/utils':
-        specifier: ^0.5.13
+        specifier: ^0.5.16
         version: 0.5.16
       '@vitest/coverage-v8':
-        specifier: ^3.1.4
+        specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.16.4)(jiti@2.4.2)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))
       tsdown:
         specifier: ^0.12.9
         version: 0.12.9(typescript@5.8.3)
       vitest:
-        specifier: ^3.1.4
+        specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.16.4)(jiti@2.4.2)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0)
 
   libs/unplugin-spreadsheet-i18n:
@@ -129,8 +129,8 @@ importers:
         specifier: '*'
         version: 0.25.6
       spreadsheet-i18n:
-        specifier: ^0.3.7
-        version: 0.3.7
+        specifier: ^0.3.8
+        version: 0.3.8
       unplugin:
         specifier: ^2.3.5
         version: 2.3.5
@@ -178,8 +178,8 @@ importers:
         specifier: ^11.1.9
         version: 11.1.9(vue@3.5.17(typescript@5.8.3))
       spreadsheet-i18n:
-        specifier: ^0.3.7
-        version: 0.3.7
+        specifier: ^0.3.8
+        version: 0.3.8
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
@@ -3524,8 +3524,8 @@ packages:
   spdx-license-ids@3.0.21:
     resolution: {integrity: sha512-Bvg/8F5XephndSK3JffaRqdT+gyhfqIPwDHpX80tJrF8QQRYMo8sNMeaZ2Dp5+jhwKnUmIOyFFQfHRkjJm5nXg==}
 
-  spreadsheet-i18n@0.3.7:
-    resolution: {integrity: sha512-NmGu7MhqAMkfMNaX+1JDq4o/2wsYrj1S2fx3VZixeg+jM8k0DmUDoPRjT7u/UFim0yUfqlxJX9XVaMyMHGfzsQ==}
+  spreadsheet-i18n@0.3.8:
+    resolution: {integrity: sha512-JDlgzBGV9917SVoHL8KzDnga0+2rCkaPY4N3pZ5qiNRYsTtMJbK9yJmKAJSxb6y4Ny/4DjtCVbaT/2hc4ycKoA==}
     engines: {node: '>=20'}
 
   sprintf-js@1.0.3:
@@ -7603,8 +7603,9 @@ snapshots:
 
   spdx-license-ids@3.0.21: {}
 
-  spreadsheet-i18n@0.3.7:
+  spreadsheet-i18n@0.3.8:
     dependencies:
+      '@e965/xlsx': 0.20.3
       consola: 3.4.2
       papaparse: 5.5.3
       std-env: 3.9.0

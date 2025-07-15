@@ -34,10 +34,10 @@
   },
   "pnpm": {
     "overrides": {
-      "deep-equal": "npm:@nolyfill/deep-equal@^1",
-      "is-generator-function": "npm:@nolyfill/is-generator-function@^1",
-      "safe-buffer": "npm:@nolyfill/safe-buffer@^1",
-      "safer-buffer": "npm:@nolyfill/safer-buffer@^1"
+      "deep-equal": "npm:@nolyfill/deep-equal@^1.0.44",
+      "is-generator-function": "npm:@nolyfill/is-generator-function@^1.0.44",
+      "safe-buffer": "npm:@nolyfill/safe-buffer@^1.0.44",
+      "safer-buffer": "npm:@nolyfill/safer-buffer@^1.0.44"
     }
   },
   "simple-git-hooks": {
