@@ -55,6 +55,7 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
+    "@e965/xlsx": "^0.20.3",
     "consola": "^3.4.2",
     "papaparse": "^5.5.3",
     "std-env": "^3.9.0",

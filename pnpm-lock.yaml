@@ -54,6 +54,9 @@ importers:
 
   libs/spreadsheet-i18n:
     dependencies:
+      '@e965/xlsx':
+        specifier: ^0.20.3
+        version: 0.20.3
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -316,6 +319,11 @@ packages:
 
   '@dotenvx/dotenvx@1.11.4':
     resolution: {integrity: sha512-k22bsUF2Ra1f1EpBB1Jd1hAqtf3CZiU75ZSEvnDU7OMy8P3LhsqZurQTHLaQmg8JM5gBfXljfK5ve73idSkpng==}
+    hasBin: true
+
+  '@e965/xlsx@0.20.3':
+    resolution: {integrity: sha512-703RN/3OdsRD5mtse2HBX7Um7xwaP9tlswEG6svOtjqokXoX7rJdQj7DyabD2I+xk22RgaIIU+R6BHgkpZGB/w==}
+    engines: {node: '>=0.8'}
     hasBin: true
 
   '@ecies/ciphers@0.2.4':
@@ -4239,6 +4247,8 @@ snapshots:
       picomatch: 4.0.2
       tinyexec: 0.3.2
       which: 4.0.0
+
+  '@e965/xlsx@0.20.3': {}
 
   '@ecies/ciphers@0.2.4(@noble/ciphers@1.3.0)':
     dependencies:
