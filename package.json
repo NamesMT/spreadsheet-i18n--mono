@@ -32,12 +32,6 @@
     "turbo": "^2.5.4",
     "typescript": "^5.8.3"
   },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
-  },
   "pnpm": {
     "overrides": {
       "deep-equal": "npm:@nolyfill/deep-equal@^1",
@@ -45,5 +39,11 @@
       "safe-buffer": "npm:@nolyfill/safe-buffer@^1",
       "safer-buffer": "npm:@nolyfill/safer-buffer@^1"
     }
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }
