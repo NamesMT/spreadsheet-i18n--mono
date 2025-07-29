@@ -22,7 +22,7 @@
 
 ## Overview
 
-**ssic** is a command-line wrapper for [**`spreadsheet-i18n`**](https://github.com/NamesMT/spreadsheet-i18n--mono/blob/main/libs/spreadsheet-i18n/README.md) which contains the magics that enables i18n workflows with spreadsheets.
+**ssic** is a command-line wrapper for [**`spreadsheet-i18n`**](https://github.com/NamesMT/spreadsheet-i18n--mono/blob/main/libs/spreadsheet-i18n) which contains the magics that enables i18n workflows with spreadsheets.
 
 ## Features
 
@@ -38,6 +38,9 @@
 
 ```sh
 npx ssic -i locales/i18nSheet.csv -o dist/locales/
+
+# To see all options:
+npx ssic --help
 ```
 
 ## License
