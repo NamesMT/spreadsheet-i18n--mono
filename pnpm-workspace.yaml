@@ -2,15 +2,19 @@ packages:
   - apps/*
   - libs/*
   - locals/*
-
-ignoredBuiltDependencies:
-  - '@namesmt/vue-query-nuxt'
-  - aws-sdk
-
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - esbuild
-  - sharp
-  - simple-git-hooks
-  - unrs-resolver
-  - vue-demi
+overrides:
+  deep-equal: npm:@nolyfill/deep-equal@^1.0.44
+  is-generator-function: npm:@nolyfill/is-generator-function@^1.0.44
+  safe-buffer: npm:@nolyfill/safe-buffer@^1.0.44
+  safer-buffer: npm:@nolyfill/safer-buffer@^1.0.44
+allowBuilds:
+  '@namesmt/vue-query-nuxt': false
+  '@parcel/watcher': true
+  aws-sdk: false
+  core-js: true
+  esbuild: true
+  sharp: true
+  simple-git-hooks: true
+  unrs-resolver: true
+  vue-demi: true
+minimumReleaseAge: 0

@@ -2,7 +2,7 @@
   "name": "spreadsheet-i18n--mono",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.34.5",
+  "packageManager": "pnpm@12.4.1",
   "engines": {
     "node": ">=20.13.1"
   },
@@ -31,14 +31,6 @@
     "tsx": "^4.23.13",
     "turbo": "^2.10.12",
     "typescript": "~5.8.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "deep-equal": "npm:@nolyfill/deep-equal@^1.0.44",
-      "is-generator-function": "npm:@nolyfill/is-generator-function@^1.0.44",
-      "safe-buffer": "npm:@nolyfill/safe-buffer@^1.0.44",
-      "safer-buffer": "npm:@nolyfill/safer-buffer@^1.0.44"
-    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
