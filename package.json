@@ -2,7 +2,7 @@
   "name": "spreadsheet-i18n--mono",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=20.13.1"
   },
@@ -18,19 +18,19 @@
   },
   "dependencies": {
     "pathe": "^2.0.3",
-    "std-env": "^3.9.0"
+    "std-env": "^3.10.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.17.0",
+    "@antfu/eslint-config": "^4.19.0",
     "@dotenvx/dotenvx": "1.11.4",
-    "@namesmt/utils": "^0.5.16",
-    "@types/node": "^22.16.4",
+    "@namesmt/utils": "^0.5.18",
+    "@types/node": "^22.20.2",
     "eslint": "^9.31.0",
-    "lint-staged": "^16.1.2",
-    "simple-git-hooks": "^2.13.0",
-    "tsx": "^4.20.3",
-    "turbo": "^2.5.4",
-    "typescript": "^5.8.3"
+    "lint-staged": "^16.4.0",
+    "simple-git-hooks": "^2.14.0",
+    "tsx": "^4.23.13",
+    "turbo": "^2.10.12",
+    "typescript": "~5.8.3"
   },
   "pnpm": {
     "overrides": {
