@@ -33,28 +33,50 @@
     "transform"
   ],
   "exports": {
-    ".": "./dist/index.js",
-    "./astro": "./dist/astro.js",
-    "./esbuild": "./dist/esbuild.js",
-    "./farm": "./dist/farm.js",
-    "./nuxt": "./dist/nuxt.js",
-    "./rollup": "./dist/rollup.js",
-    "./rspack": "./dist/rspack.js",
-    "./types": "./dist/types.js",
-    "./vite": "./dist/vite.js",
-    "./webpack": "./dist/webpack.js",
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./astro": {
+      "types": "./dist/astro.d.mts",
+      "import": "./dist/astro.mjs"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.mts",
+      "import": "./dist/esbuild.mjs"
+    },
+    "./farm": {
+      "types": "./dist/farm.d.mts",
+      "import": "./dist/farm.mjs"
+    },
+    "./nuxt": {
+      "types": "./dist/nuxt.d.mts",
+      "import": "./dist/nuxt.mjs"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.mts",
+      "import": "./dist/rollup.mjs"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.mts",
+      "import": "./dist/rspack.mjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/types.mjs"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.mts",
+      "import": "./dist/vite.mjs"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.mts",
+      "import": "./dist/webpack.mjs"
+    },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
-  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
@@ -114,7 +136,7 @@
     "@types/node": "^22.20.2",
     "eslint": "^9.31.0",
     "rollup": "^4.63.2",
-    "tsdown": "^0.12.9",
+    "tsdown": "^0.23.0",
     "tsx": "^4.23.13",
     "typescript": "~5.8.3",
     "vite": "^6.4.3",
