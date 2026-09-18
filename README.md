@@ -75,8 +75,6 @@ This Turborepo has some additional tools already setup for you:
 + 🧐 ESLint + stylistic formatting rules ([antfu](https://github.com/antfu/eslint-config))
 + 📚 A few more goodies like:
   + [lint-staged](https://github.com/lint-staged/lint-staged) pre-commit hook
-  + 🤖 Initialization prompt for AI Agents to modify the monorepo according to your needs.
-    * To start, open the chat with your AI Agent, and include the [`INIT_PROMPT.md`](./INIT_PROMPT.md) file in your prompt.
 
 ### Build
 

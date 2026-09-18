@@ -29,8 +29,6 @@ logs
 tsconfig.tsbuildinfo
 *.log
 *.pem
-# Un-ignore pems in locals/common/dev
-!locals/common/dev/*
 
 
 # debug
