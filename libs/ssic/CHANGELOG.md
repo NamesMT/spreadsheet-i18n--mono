@@ -1,6 +1,18 @@
 # Changelog
 
 
+## ssic@0.1.3
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/ssic@0.1.2...ssic@0.1.3)
+
+### 📦 Build
+
+- Migrate monorepo libs to tsdown 0.23 ([14deee7](https://github.com/namesmt/spreadsheet-i18n--mono/commit/14deee7))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## ssic@0.1.2
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/ssic@0.1.1...ssic@0.1.2)
