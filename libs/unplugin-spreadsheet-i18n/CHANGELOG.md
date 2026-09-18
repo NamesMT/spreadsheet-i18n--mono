@@ -1,6 +1,22 @@
 # Changelog
 
 
+## unplugin-spreadsheet-i18n@0.4.0
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n@0.3.6...unplugin-spreadsheet-i18n@0.4.0)
+
+### 🩹 Fixes
+
+- **unplugin-spreadsheet-i18n:** Add missing @local/tsconfig devDependency ([7277659](https://github.com/namesmt/spreadsheet-i18n--mono/commit/7277659))
+
+### 📦 Build
+
+- Migrate monorepo libs to tsdown 0.23 ([14deee7](https://github.com/namesmt/spreadsheet-i18n--mono/commit/14deee7))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## unplugin-spreadsheet-i18n@0.3.6
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n@0.3.5...unplugin-spreadsheet-i18n@0.3.6)
