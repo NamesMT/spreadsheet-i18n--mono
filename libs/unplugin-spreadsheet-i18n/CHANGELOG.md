@@ -1,6 +1,18 @@
 # Changelog
 
 
+## unplugin-spreadsheet-i18n@0.3.6
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n@0.3.5...unplugin-spreadsheet-i18n@0.3.6)
+
+### 🏡 Chore
+
+- **deps:** Upgrade minor and patch dependencies ([33084af](https://github.com/namesmt/spreadsheet-i18n--mono/commit/33084af))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## unplugin-spreadsheet-i18n-v0.3.5
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n-v0.3.4...unplugin-spreadsheet-i18n-v0.3.5)
