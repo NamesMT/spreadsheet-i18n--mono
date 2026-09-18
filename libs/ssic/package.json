@@ -29,7 +29,7 @@
   ],
   "sideEffects": false,
   "bin": {
-    "ssic": "./dist/cli-entry.mjs"
+    "ssic": "dist/cli-entry.mjs"
   },
   "files": [
     "dist"
