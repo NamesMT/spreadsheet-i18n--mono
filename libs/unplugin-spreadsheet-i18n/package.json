@@ -107,6 +107,7 @@
     "unplugin": "^2.3.11"
   },
   "devDependencies": {
+    "@local/tsconfig": "workspace:*",
     "@nuxt/kit": "^3.21.11",
     "@nuxt/schema": "^3.21.11",
     "@rollup/pluginutils": "^5.4.0",
