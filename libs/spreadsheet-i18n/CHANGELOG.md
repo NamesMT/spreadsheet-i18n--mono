@@ -1,6 +1,22 @@
 # Changelog
 
 
+## spreadsheet-i18n@0.3.9
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.8...spreadsheet-i18n@0.3.9)
+
+### 🏡 Chore
+
+- **deps:** Upgrade minor and patch dependencies ([33084af](https://github.com/namesmt/spreadsheet-i18n--mono/commit/33084af))
+
+### 🎨 Styles
+
+- **spreadsheet-i18n:** Fix object literal indentation in core.ts ([ac8d522](https://github.com/namesmt/spreadsheet-i18n--mono/commit/ac8d522))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n-v0.3.8
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n-v0.3.7...spreadsheet-i18n-v0.3.8)
