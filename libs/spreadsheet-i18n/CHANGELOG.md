@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n@0.3.11
+
+[compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.10...spreadsheet-i18n@0.3.11)
+
+### 🩹 Fixes
+
+- **core:** Apply include/exclude filters consistently against the scan `cwd` ([f37caed](https://github.com/namesmt/spreadsheet-i18n--mono/commit/f37caed))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n@0.3.10
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.9...spreadsheet-i18n@0.3.10)
