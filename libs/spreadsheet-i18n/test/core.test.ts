@@ -139,6 +139,28 @@ describe('core Functions', () => {
       )
     })
 
+    it('should resolve string include globs against the cwd argument', async () => {
+      const customRootDir = resolve('custom/path')
+      const filePath = resolve(customRootDir, 'i18n.csv')
+      const options: Options = { include: 'i18n.csv' }
+
+      await coreFunctions.processSheetFile({ filePath, options, cwd: customRootDir })
+
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(filePath, undefined)
+      expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledTimes(1)
+    })
+
+    it('should match anchored RegExps against paths relative to the cwd argument', async () => {
+      const customRootDir = resolve('custom/path')
+      const filePath = resolve(customRootDir, 'frontend/i18n.csv')
+      const options: Options = { include: /^frontend\// }
+
+      await coreFunctions.processSheetFile({ filePath, options, cwd: customRootDir })
+
+      expect(mockedFsUtils.readCsvFile).toHaveBeenCalledWith(filePath, undefined)
+      expect(mockedFsUtils.outputWriteMerge).toHaveBeenCalledTimes(1)
+    })
+
     it('should log error for unsupported file types', async () => {
       const unsupportedFilePath = resolve('test-data/i18n.txt')
       await coreFunctions.processSheetFile({ filePath: unsupportedFilePath, options: {}, cwd: testRootDir })

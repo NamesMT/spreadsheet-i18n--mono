@@ -1,8 +1,8 @@
-import type { Options, ProcessedSheetData, SpecialFileProcessedOutput } from './types'
+import type { FilterPattern, Options, ProcessedSheetData, SpecialFileProcessedOutput } from './types'
 import { createFilter } from '@rollup/pluginutils'
 import { consola } from 'consola'
 import { defu } from 'defu'
-import { parse, relative, resolve } from 'pathe'
+import { isAbsolute, parse, relative, resolve } from 'pathe'
 import { process } from 'std-env'
 import { glob } from 'tinyglobby'
 import {
@@ -141,13 +141,66 @@ export function processSheetContent({
   return { i18nOutputs: standardI18nOutputs, specialOutputs: allSpecialOutputs }
 }
 
+type SheetFileFilter = (filePath: string) => boolean
+
+/**
+ * Builds the single include/exclude filter shared by `scanConvert` and `processSheetFile`.
+ *
+ * It fixes the otherwise inconsistent semantics of `@rollup/pluginutils`' `createFilter`:
+ * - string glob patterns are resolved against `cwd` instead of `process.cwd()`,
+ * - RegExp patterns are tested against the path relative to `cwd`, which is what
+ *   `scanConvert` uses when it filters its glob results.
+ *
+ * `include` globs and RegExps are combined with AND semantics, matching
+ * `scanConvert`'s documented behaviour (scan by glob, then apply RegExp filters).
+ */
+function createSheetFilter(
+  include: FilterPattern | undefined,
+  exclude: FilterPattern | undefined,
+  cwd: string,
+): SheetFileFilter {
+  const { globs: includeGlobs, regexps: includeRegexps } = normalizePatterns(include)
+  const { globs: excludeGlobs, regexps: excludeRegexps } = normalizePatterns(exclude)
+
+  const includeGlobFilter = createFilter(includeGlobs, undefined, { resolve: cwd })
+  const excludeGlobFilter = createFilter(undefined, excludeGlobs, { resolve: cwd })
+
+  const testRegexps = (regexps: RegExp[], relativeFilePath: string): boolean =>
+    regexps.some((re) => {
+      re.lastIndex = 0
+      return re.test(relativeFilePath)
+    })
+
+  return (filePath) => {
+    if (typeof filePath !== 'string' || filePath.includes('\0'))
+      return false
+
+    const absoluteFilePath = isAbsolute(filePath) ? filePath : resolve(cwd, filePath)
+    const relativeFilePath = relative(cwd, absoluteFilePath)
+
+    if (includeGlobs.length > 0 && !includeGlobFilter(absoluteFilePath))
+      return false
+    if (includeRegexps.length > 0 && !testRegexps(includeRegexps, relativeFilePath))
+      return false
+
+    if (excludeGlobs.length > 0 && !excludeGlobFilter(absoluteFilePath))
+      return false
+    if (excludeRegexps.length > 0 && testRegexps(excludeRegexps, relativeFilePath))
+      return false
+
+    return true
+  }
+}
+
 interface ProcessSheetFileParams {
   filePath: string
   options?: Options
   /**
    * Optionally from `include`, `exclude`, a pre-created filter function can be passed in.
+   *
+   * A `@rollup/pluginutils` `createFilter` result is also accepted.
    */
-  filter?: ReturnType<typeof createFilter>
+  filter?: SheetFileFilter
   cwd?: string
 }
 
@@ -160,7 +213,7 @@ export async function processSheetFile({
   cwd = cwd ? resolve(cwd) : resolve()
   const resolvedOptions = defu(options, defaultOptionsObject) as ResolvedOptions
 
-  filter ??= createFilter(options?.include, options?.exclude)
+  filter ??= createSheetFilter(options?.include, options?.exclude, cwd)
 
   if (!filter(filePath))
     return consola.debug(`[sheetI18n] Skipping: ${relative(cwd, filePath)}`)
@@ -262,13 +315,18 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
   consola.debug(`[sheetI18n] Resolved options for scan: ${JSON.stringify(resolvedOptions, null, 2)}`)
 
   const { globs: includeGlobs, regexps: includeRegexps } = normalizePatterns(resolvedOptions.include)
-  const { globs: excludeGlobs, regexps: excludeRegexps } = normalizePatterns(resolvedOptions.exclude)
+  const { globs: excludeGlobs } = normalizePatterns(resolvedOptions.exclude)
 
   if (includeGlobs.length === 0 && includeRegexps.length === 0) {
     // This case implies that the default include regex was overridden with an empty pattern.
     consola.warn('[sheetI18n] No include patterns specified (neither globs nor RegExps). Nothing to process.')
     return
   }
+
+  // Build the filter once, with `cwd` as the resolution base, and reuse it both for
+  // pre-filtering the glob results and inside `processSheetFile`, so the two steps
+  // can never disagree about which files match.
+  const filter = createSheetFilter(resolvedOptions.include, resolvedOptions.exclude, cwd)
 
   // Determine the globs to search. If no includeGlobs are provided, search all files ('**/*')
   // so that includeRegexps can be applied later. excludeGlobs will always be used by tinyglobby.
@@ -290,23 +348,7 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
     return // Stop if globbing fails
   }
 
-  const filteredFiles = files.filter((filePath) => {
-    // Use relative path for regexp matching
-    const relativeFilePath = relative(cwd, filePath)
-
-    if (includeRegexps.length > 0) {
-      if (!includeRegexps.some(re => re.test(relativeFilePath))) {
-        return false
-      }
-    }
-
-    if (excludeRegexps.length > 0) {
-      if (excludeRegexps.some(re => re.test(relativeFilePath))) {
-        return false
-      }
-    }
-    return true
-  })
+  const filteredFiles = files.filter(filter)
 
   if (filteredFiles.length === 0) {
     consola.info('[sheetI18n] No files matched the specified patterns after all filters.')
@@ -317,7 +359,7 @@ export async function scanConvert(options?: Options, cwd?: string): Promise<void
 
   for (const filePath of filteredFiles) {
     // processSheetFile expects absolute paths for filePath, and cwd for relative logging
-    await processSheetFile({ filePath, options: resolvedOptions, cwd })
+    await processSheetFile({ filePath, options: resolvedOptions, cwd, filter })
   }
 
   consola.info('[sheetI18n] Scan and convert finished.')
