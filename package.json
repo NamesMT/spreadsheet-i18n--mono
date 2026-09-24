@@ -14,6 +14,7 @@
     "build": "dotenvx run -- turbo run build",
     "deploy": "dotenvx run -- turbo run deploy",
     "i18n": "pnpm dlx lingo.dev run",
+    "release:check": "node scripts/release-target.mjs",
     "prepare": "simple-git-hooks"
   },
   "dependencies": {

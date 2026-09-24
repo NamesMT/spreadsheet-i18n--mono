@@ -22,6 +22,7 @@
     * [Utilities](#utilities)
     * [Build](#build)
     * [Develop](#develop)
+    * [Release](#release)
     * [Notes](#notes)
       * [`import` ordering](#import-ordering)
     * [Remote Caching](#remote-caching)
@@ -87,6 +88,20 @@ To develop all apps and packages, run the following command:
 `pnpm run dev`
 
 For local development environment variables / secrets, create a copy of `.env.dev` to `.env.dev.local`.
+
+### Release
+
+Releases are **per package**, and run from **Actions → Release → Run workflow**
+([`.github/workflows/release.yml`](./.github/workflows/release.yml)): give it a workspace package
+name (e.g. `spreadsheet-i18n`) and, optionally, the version to ship.
+
+It resolves the package and checks the version against its `package.json`, runs `quickcheck`, then
+lets [`repo-release`](https://github.com/namesmt/repo-release) write that package's `CHANGELOG.md`,
+bump its `package.json`, commit, tag `<package>@<version>`, push, create the GitHub release, and
+publish it to npm — publishing is skipped for a package marked `"private": true`
+(`@local/locales`, `@local/tsconfig`). Ticking **dry-run** stops before anything is written back.
+
+Locally, `pnpm run release:check <package> [version]` validates a target before you dispatch.
 
 ### Notes
 
