@@ -1,6 +1,18 @@
 # Changelog
 
 
+## unplugin-spreadsheet-i18n@0.4.1
+
+[compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n@0.4.0...unplugin-spreadsheet-i18n@0.4.1)
+
+### 📖 Documentation
+
+- **pkg:** Use canonical NamesMT repository URLs and add root npm metadata ([d185b25](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/d185b25))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## unplugin-spreadsheet-i18n@0.4.0
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/unplugin-spreadsheet-i18n@0.3.6...unplugin-spreadsheet-i18n@0.4.0)
