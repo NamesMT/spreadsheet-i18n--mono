@@ -1,6 +1,22 @@
 # Changelog
 
 
+## ssic@0.1.4
+
+[compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/ssic@0.1.3...ssic@0.1.4)
+
+### 📖 Documentation
+
+- **pkg:** Use canonical NamesMT repository URLs and add root npm metadata ([d185b25](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/d185b25))
+
+### 🏡 Chore
+
+- **ssic:** Drop ./ prefix from bin to silence npm publish warning ([32febe5](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/32febe5))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## ssic@0.1.3
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/ssic@0.1.2...ssic@0.1.3)
