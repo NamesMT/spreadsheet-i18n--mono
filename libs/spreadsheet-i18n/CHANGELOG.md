@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n@0.3.12
+
+[compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.11...spreadsheet-i18n@0.3.12)
+
+### 📖 Documentation
+
+- **pkg:** Use canonical NamesMT repository URLs and add root npm metadata ([d185b25](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/d185b25))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n@0.3.11
 
 [compare changes](https://github.com/namesmt/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.10...spreadsheet-i18n@0.3.11)
