@@ -6,12 +6,12 @@
   "author": "NamesMT <dangquoctrung123@gmail.com>",
   "license": "Apache-2.0",
   "funding": "https://github.com/sponsors/namesmt",
-  "homepage": "https://github.com/namesmt/spreadsheet-i18n--mono#readme",
+  "homepage": "https://github.com/NamesMT/spreadsheet-i18n--mono#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/namesmt/spreadsheet-i18n--mono.git"
+    "url": "git+https://github.com/NamesMT/spreadsheet-i18n--mono.git"
   },
-  "bugs": "https://github.com/namesmt/spreadsheet-i18n--mono/issues",
+  "bugs": "https://github.com/NamesMT/spreadsheet-i18n--mono/issues",
   "keywords": [
     "transform",
     "spreadsheet",

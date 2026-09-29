@@ -3,6 +3,30 @@
   "type": "module",
   "private": true,
   "packageManager": "pnpm@12.4.1",
+  "description": "Monorepo for spreadsheet-i18n and its ecosystem: spreadsheet-i18n, unplugin-spreadsheet-i18n and the ssic CLI",
+  "author": "NamesMT <dangquoctrung123@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/NamesMT/spreadsheet-i18n--mono#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NamesMT/spreadsheet-i18n--mono.git"
+  },
+  "bugs": "https://github.com/NamesMT/spreadsheet-i18n--mono/issues",
+  "keywords": [
+    "spreadsheet-i18n",
+    "i18n",
+    "spreadsheet",
+    "csv",
+    "tsv",
+    "dsv",
+    "xlsx",
+    "ods",
+    "localization",
+    "localize",
+    "unplugin",
+    "cli",
+    "monorepo"
+  ],
   "engines": {
     "node": ">=20.13.1"
   },
