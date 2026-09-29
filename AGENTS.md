@@ -3,6 +3,11 @@
 Orientation for agents in this monorepo. Deeper sources of truth: [`README.md`](./README.md) and the
 per-package READMEs in [`libs/*`](./libs) and [`locals/locales`](./locals/locales).
 
+## Docs
+
+- [`docs/RELEASING.md`](./docs/RELEASING.md) — per-package release workflow: inputs, pipeline order, trusted publishers, release order.
+- [`docs/I18N-PIPELINE.md`](./docs/I18N-PIPELINE.md) — sheet → JSON → locales → build-time plugin, with the cwd gotchas.
+
 ## Fast start
 
 ```sh
@@ -43,10 +48,8 @@ pnpm -F ssic cli -- --help                    # run the CLI from source, unbuilt
 
 ## Releases
 
-- Manual and version-first: dispatch **Actions → Release → Run workflow** with `package` (required, workspace name) plus optional `version` (bare `1.2.3`, no leading `v`), `publish` (default `true`) and `dry-run` (default `false`); validate locally with `pnpm run release:check <pkg> [version]`. Only this workflow publishes — a pushed tag does nothing.
-- `release-target.mjs` validates the version, `quickcheck` runs, then [`repo-release`](https://github.com/NamesMT/repo-release) writes `CHANGELOG.md`, bumps `package.json`, commits, tags `<package>@<version>`, pushes, creates the GitHub release and publishes to npm (each lib builds via its own `prepublishOnly`; the pipeline never builds the workspace).
-- dry-run requires an explicit version and prints the changelog only — no commit, tag, push or publish.
-- `"private": true` packages (`@local/locales`, `@local/tsconfig`) skip publish; the three `libs/*` ones each need a trusted publisher on npmjs.com naming this repo and `release.yml`.
+- Manual, per package, version-first: **Actions → Release → Run workflow** — one run releases ONE package; only this workflow publishes (a pushed tag does nothing). Validate locally with `pnpm run release:check <pkg> [version]`.
+- Inputs, pipeline order, trusted-publisher setup and release order: [`docs/RELEASING.md`](./docs/RELEASING.md).
 
 ## Gotchas
 
