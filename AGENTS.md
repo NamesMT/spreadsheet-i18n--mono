@@ -57,3 +57,21 @@ pnpm -F ssic cli -- --help                    # run the CLI from source, unbuilt
 - `ssic` has no `test/`, so its `check` gate runs no tests even though `vitest.config.ts` includes `test/**`.
 - `shamefully-hoist=true` in `.npmrc` is intentional; do not "fix" it.
 - Conventional commits (`feat:`, `fix:`, `chore:`, …) — the changelogs derive from them.
+
+## How to work here
+
+- Check who calls it before you change it — the packages consume each other — and say when impact is unclear rather than guessing.
+- Never overwrite or delete a large section you haven't understood.
+- Don't invent requirements — surface what looks needed.
+- Report the risk, not only the change: correctness, security, operational, integration.
+- **Fix the root cause, not the instance.** The same bug under different names — a copied helper, a rule stated twice, a guard bypassed by a second path — is one class: fix it once, in scope.
+- Verify before claiming, and say which direction you checked. A passing test is not evidence it pinned anything.
+- Missing recall of this project: read this file, `docs/` and `git log` before acting.
+
+## Conciseness (applies everywhere)
+
+Prune verbose, keep correctness — code, comments, docs alike. Code: a comment only for non-obvious intent. Docs: one idea per sentence; cut anything that wouldn't change what a reader does. Delete history `git log` already holds — keep the rule, not the story. Never drop a caveat to save a line.
+
+## User-facing docs
+
+`README.md`, `docs/*.md` and the per-package `libs/*/README.md` are for a person: concise first read, depth behind `<details>` spoilers — the per-bundler setups in [`libs/unplugin-spreadsheet-i18n/README.md`](./libs/unplugin-spreadsheet-i18n/README.md) are the model — visuals for skimmers; no media pipeline exists. Docs ship with the change, in the same commit.
