@@ -74,4 +74,4 @@ Prune verbose, keep correctness — code, comments, docs alike. Code: a comment 
 
 ## User-facing docs
 
-`README.md`, `docs/*.md` and the per-package `libs/*/README.md` are for a person: concise first read, depth behind `<details>` spoilers — the per-bundler setups in [`libs/unplugin-spreadsheet-i18n/README.md`](./libs/unplugin-spreadsheet-i18n/README.md) are the model — visuals for skimmers; no media pipeline exists. Docs ship with the change, in the same commit.
+`README.md`, `docs/*.md` and the per-package `libs/*/README.md` are for a person. Keep the first read concise; put depth in `<details>` spoilers — the per-bundler setups in [`libs/unplugin-spreadsheet-i18n/README.md`](./libs/unplugin-spreadsheet-i18n/README.md) are the model — and add visuals where they help; no media pipeline exists yet. Docs ship with the change, in the same commit.
