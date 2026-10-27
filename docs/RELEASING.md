@@ -18,7 +18,7 @@ Per package, manual: **Actions → Release → Run workflow**. Only `release.yml
 ```sh
 pnpm install --frozen-lockfile
 node scripts/release-target.mjs "$PACKAGE" "$VERSION"   # -> $GITHUB_OUTPUT: path=, publish=
-pnpm run quickcheck                                     # turbo run quickcheck, whole workspace
+pnpm run check                                         # turbo run check: lint + types + tests, whole workspace
 npx -y repo-release@latest --pkg="$PACKAGE" [-r "$VERSION" | --bump] --release --push [--publish]
 ```
 

@@ -29,7 +29,8 @@ Root scripts — all are `turbo run <task>` unless noted, so they fan out across
 
 ```sh
 pnpm install            # @local/locales regenerates its JSON from src/sheets on postinstall
-pnpm run quickcheck     # turbo run quickcheck: lint + test:types everywhere — run before saying "done"
+pnpm run quickcheck     # turbo run quickcheck: lint + test:types everywhere — fast, no tests
+pnpm run check          # turbo run check: quickcheck plus every package's tests: CI, deploy and release use this
 pnpm run build          # turbo run build (tsdown -> each package's dist/)
 pnpm run dev            # turbo run dev:prepare then dev (only @local/locales has a dev task)
 pnpm run i18n           # localize the sheets via lingo.dev (needs LINGODOTDEV_API_KEY in .env)
@@ -40,7 +41,7 @@ One package at a time, with `-F`:
 
 ```sh
 pnpm -F <pkg> quickcheck                       # that package's lint + test:types
-pnpm -F <pkg> check                            # lint + test:types + vitest run --coverage
+pnpm -F <pkg> check                            # lint + test:types + vitest run --coverage (the full gate)
 pnpm -F <pkg> test                             # Vitest watch mode
 pnpm -F spreadsheet-i18n test run --coverage   # exactly what CI's codecov job runs
 pnpm -F ssic cli -- --help                     # run the CLI from source, unbuilt
@@ -69,7 +70,7 @@ Paths are relative to this repo's root; three packages have their own `src/`, so
   and `dev`, writing `locals/locales/src/sheets/` (the i18n source of truth) through `locals/locales/src/index.ts` + `locals/locales/src/composer.ts`
   into generated JSON in `dist/`.
 - `locals/tsconfig` (`@local/tsconfig`) — private shared TypeScript bases: `base.json` and `vue.json`.
-- `.github/workflows/` — `quickcheck.yml` (callable `pnpm run quickcheck`),
+- `.github/workflows/` — `quickcheck.yml` (keeps its name; callable, runs `pnpm run check`),
   `test-&-codecov_spreadsheet-i18n.yml` (push/PR under `libs/spreadsheet-i18n/**`, runs the coverage
   command) and `release.yml` (manual, per package); `scripts/release-target.mjs` backs the release.
 
