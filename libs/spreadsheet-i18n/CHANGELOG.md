@@ -1,6 +1,18 @@
 # Changelog
 
 
+## spreadsheet-i18n@0.3.14
+
+[compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.13...spreadsheet-i18n@0.3.14)
+
+### 🩹 Fixes
+
+- **spreadsheet-i18n:** Quote xlsx cells so multi-line comment rows are dropped whole ([106d92f](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/106d92f))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n@0.3.13
 
 [compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.12...spreadsheet-i18n@0.3.13)
