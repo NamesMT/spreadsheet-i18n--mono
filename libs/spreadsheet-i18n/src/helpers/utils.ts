@@ -96,17 +96,29 @@ export function filterCommentRows({ csvString, commentsConfig }: FilterCommentRo
     return csvString
   }
   // At this point, commentsConfig is a non-empty string or a non-empty array of strings.
-  const commentPatterns = Array.isArray(commentsConfig) ? commentsConfig : [commentsConfig]
-  return csvString
-    .split(/\r\n/)
-    .filter(
-      line => !commentPatterns.some((comment: string) => {
-        const escapedComment = comment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-        const commentRegex = new RegExp(`^"?${escapedComment}`)
-        return line.match(commentRegex)
-      }),
-    )
-    .join('\r\n')
+  const commentRegexes = (Array.isArray(commentsConfig) ? commentsConfig : [commentsConfig])
+    .map(comment => new RegExp(`^"?${comment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`))
+
+  // Splits on `\n` / `\r\n` outside quotes only, so a multi-line cell is never cut and each kept record keeps its own line ending.
+  let output = ''
+  let recordStart = 0
+  let inQuotes = false
+  for (let i = 0; i <= csvString.length; i++) {
+    const char = csvString[i]
+    if (char === '"') {
+      inQuotes = !inQuotes
+      continue
+    }
+    if (i < csvString.length && (inQuotes || char !== '\n'))
+      continue
+
+    const record = csvString.slice(recordStart, i).replace(/\r$/, '')
+    if (!commentRegexes.some(regex => regex.test(record)))
+      output += csvString.slice(recordStart, i + 1)
+    recordStart = i + 1
+  }
+
+  return output
 }
 
 interface ParseCsvDataParams {

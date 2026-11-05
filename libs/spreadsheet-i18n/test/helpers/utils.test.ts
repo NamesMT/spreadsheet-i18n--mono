@@ -135,6 +135,18 @@ describe('helper Utilities - utils.ts', () => {
       const csv = '"//comment"\r\nkey,value'
       expect(filterCommentRows({ csvString: csv, commentsConfig: '//' })).toBe('key,value')
     })
+    it('should filter comments in `\\n` line endings', () => {
+      const csv = '#top, comment\nKEY,en\nhello,Hello\n#body, comment\nbye,Bye\n'
+      expect(filterCommentRows({ csvString: csv, commentsConfig: '#' })).toBe('KEY,en\nhello,Hello\nbye,Bye\n')
+    })
+    it('should filter comments in mixed line endings', () => {
+      const csv = '#top\r\nKEY,en\nhello,Hello\r\n#body\nbye,Bye'
+      expect(filterCommentRows({ csvString: csv, commentsConfig: '#' })).toBe('KEY,en\nhello,Hello\r\nbye,Bye')
+    })
+    it('should not cut multi-line quoted cells, even if a line inside starts with a comment', () => {
+      const csv = 'KEY,en\n$FILE;terms;md,"# Terms\n#Section with ""quotes""\r\nbody"\n#comment\nbye,Bye'
+      expect(filterCommentRows({ csvString: csv, commentsConfig: '#' })).toBe('KEY,en\n$FILE;terms;md,"# Terms\n#Section with ""quotes""\r\nbody"\nbye,Bye')
+    })
   })
 
   describe('parseCsvData', () => {
