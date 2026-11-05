@@ -35,7 +35,7 @@ export function readXlsxFile(filePath: string): string {
     for (const sheet of Object.values(workbook.Sheets)) {
       jsonData = jsonData.concat(xlsxUtils.sheet_to_json(sheet))
     }
-    return xlsxUtils.sheet_to_csv(xlsxUtils.json_to_sheet(jsonData), { FS: Papa.RECORD_SEP, RS: '\r\n' })
+    return xlsxUtils.sheet_to_csv(xlsxUtils.json_to_sheet(jsonData), { FS: Papa.RECORD_SEP, RS: '\r\n', forceQuotes: true })
   }
   catch (error: any) {
     consola.error(`[sheetI18n] Error reading XLSX file ${filePath}: ${error.message}`)
