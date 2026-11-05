@@ -5,7 +5,7 @@
 - Entry points: `scanConvert(options, cwd)` (scan) and `processSheetFile({ filePath, options, filter, cwd })` (one file), both in `libs/spreadsheet-i18n/src/core.ts`.
 - Scanned extensions: `.csv`/`.dsv`/`.tsv`; `.xls/.xlsx/.xlsm/.xlsb/.ods/.fods` only with `xlsx: true`. Multi-sheet workbooks are concatenated into one table.
 - Default `include` is `/(?:[/\\]|^)i18n\.[cdt]sv$/` — the file must be named `i18n.csv|tsv|dsv` unless you pass your own.
-- Records whose first cell starts with `comments` (default `//`) are dropped before parsing, with `\n` or `\r\n` line endings; a line inside a quoted multi-line cell is never treated as a comment.
+- Records whose first cell starts with `comments` (default `//`) are dropped before parsing (including above the header row), with `\n` or `\r\n` line endings; a line inside a quoted multi-line cell is never treated as a comment.
 - The `keyColumn` header (default `KEY`) holds keys; every other header matching `localesMatcher` (default `/^\w{2}(?:-\w{2,4})?$/`) is a locale column — a two-letter non-locale header such as `id` also matches. Rows with an empty key are skipped.
 - `valueColumn` unset (default) → one `<locale>.json` per locale column; set → one `<inputName>.json` from that column.
 - `keyStyle: 'nested'` (default `flat`) expands dotted keys; `replacePunctuationSpace: true` (default) turns a space before `!$%:;?+-` into a non-breaking space (French).

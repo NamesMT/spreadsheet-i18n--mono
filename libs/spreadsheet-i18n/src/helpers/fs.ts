@@ -10,17 +10,14 @@ import { dirname } from 'pathe'
 
 /**
  * Reads a CSV/DSV file and returns its content as a string.
+ *
+ * The content is returned as-is (minus a BOM): parsing it here would take a comment row above the header as the header.
  */
-export async function readCsvFile(filePath: string, delimiter: ResolvedOptions['delimiter']): Promise<string> {
+// eslint-disable-next-line unused-imports/no-unused-vars -- kept for API compatibility
+export async function readCsvFile(filePath: string, delimiter?: ResolvedOptions['delimiter']): Promise<string> {
   try {
-    delimiter = typeof delimiter === 'function' ? delimiter(filePath) : delimiter
     const file = await readFile(filePath, 'utf-8')
-    const parsed = Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      delimiter,
-    })
-    return Papa.unparse(parsed.data, { header: true, delimiter })
+    return file.replace(/^\uFEFF/, '')
   }
   catch (error: any) {
     consola.error(`[sheetI18n] Error reading CSV file ${filePath}: ${error.message}`)

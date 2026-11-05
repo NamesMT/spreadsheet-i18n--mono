@@ -1,0 +1,7 @@
+﻿# Notes above the header
+KEY,DESCRIPTION,en,vi
+hello,greeting,Hello,Xin chao
+# a comment row, in the middle
+$FILE;terms;md,multi-line,"# Terms
+#Not a comment, inside quotes",
+bye,,Bye,Tam biet
