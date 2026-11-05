@@ -1,6 +1,19 @@
 # Changelog
 
 
+## spreadsheet-i18n@0.3.13
+
+[compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.12...spreadsheet-i18n@0.3.13)
+
+### 🩹 Fixes
+
+- **spreadsheet-i18n:** Filter comment rows with `\n` line endings ([6fcadff](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/6fcadff))
+- **spreadsheet-i18n:** Keep csv comment rows above the header from breaking parsing ([7a18dc9](https://github.com/NamesMT/spreadsheet-i18n--mono/commit/7a18dc9))
+
+### ❤️ Contributors
+
+- NamesMT ([@NamesMT](https://github.com/NamesMT))
+
 ## spreadsheet-i18n@0.3.12
 
 [compare changes](https://github.com/NamesMT/spreadsheet-i18n--mono/compare/spreadsheet-i18n@0.3.11...spreadsheet-i18n@0.3.12)
